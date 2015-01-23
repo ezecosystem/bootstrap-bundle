@@ -1,0 +1,3 @@
+xrowbootstrap_homepage:
+    path:     /
+    defaults: { _controller: xrowbootstrapBundle:Default:index }

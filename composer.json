@@ -1,0 +1,9 @@
+{
+    "name": "xrow/bootstrapBundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "description": "The xrow bundle",
+    "autoload": {
+        "psr-4": { "xrow\\bootstrapBundle\\": "" }
+    }
+}

@@ -1,0 +1,4 @@
+services:
+#    xrowbootstrap.example:
+#        class: xrow\bootstrapBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
