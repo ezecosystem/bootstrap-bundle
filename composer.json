@@ -1,5 +1,5 @@
 {
-    "name": "xrow/bootstrapBundle",
+    "name": "xrow/bootstrap-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "description": "The xrow bundle",
