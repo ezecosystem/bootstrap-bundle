@@ -1,2 +1,2 @@
-logo:    banane.png
-font:          arial
+custom-logo:    ../images/logo.png
+custom-font:    \"Courier New\", Courier, monospace

@@ -1,0 +1,6 @@
+{% extends "xrowbootstrapBundle::pagelayout.html.twig" %}
+{% block content %}
+<h2>{{ ez_render_field( content, 'title' ) }}</h2>             
+<p><b>{{ ez_render_field( content, 'intro' ) }}</b></p>
+<p>{{ ez_render_field( content, 'body' ) }}</p>
+{% endblock %}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="unsupported-ie ie" lang="{{ app.request.locale }}"><![endif]-->
+<!--[if IE 9 ]><html class="ie ie9" lang="{{ app.request.locale }}"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="{{ app.request.locale }}"><!--<![endif]-->
+<head>
+    {% include 'xrowbootstrapBundle::page_head_displaystyles.html.twig' %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    {% block page_head %}
+        {% include 'xrowbootstrapBundle::page_head.html.twig' %}
+    {% endblock %}
+    {% include 'xrowbootstrapBundle::page_head_style.html.twig' %}
+    {% include 'xrowbootstrapBundle::page_head_script.html.twig' %}
+</head>
+<body>
+    {% if location is defined and not location.isDraft %}
+        {% set currentLocation=location %}
+    {% endif %}
+
+    {# {% block header %}
+        {% include 'xrowbootstrapBundle::page_header.html.twig' %}
+    {% endblock %} #}
+
+    {% block topMenu %}
+        {% include 'xrowbootstrapBundle::page_navbar.html.twig' %}
+        {#{{ render(
+            controller(
+            "xrowbootstrapBundle:Menu:topMenu",{'currentLocationId': currentLocation is defined ? currentLocation.id : null}
+            )
+        ) }} #}
+    {% endblock %} 
+
+    {% if pageData is defined and pageData.showPath %}
+        {% block path %}
+            {% include 'xrowbootstrapBundle::page_toppath.html.twig' %}
+        {% endblock %}
+    {% endif %}
+
+    {% block carousel %}
+        {% include 'xrowbootstrapBundle::page_carousel.html.twig' %}
+    {% endblock %}
+    
+    {% block breadcrumb %}
+        {% if currentLocation is defined %}
+            {{ render( controller( 'eZDemoBundle:Demo:viewBreadcrumb', { 'locationId': currentLocation.id } ) ) }}
+        {% endif %}
+    {% endblock %}
+
+    <div class="container marketing">
+        <div class="row">
+            <div class="well col-md-12">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+    {# {% block footer %}
+        {{ render( controller( "eZDemoBundle:Footer:index" ) ) }}
+    {% endblock %} #}
+
+    {# {% block footerScript %}
+        {% include 'xrowbootstrapBundle::page_footer_script.html.twig' %}
+    {% endblock %} #}
+
+    </div>
+</body>
+</html>

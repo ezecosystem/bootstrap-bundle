@@ -1,3 +1,7 @@
-xrowbootstrap_homepage:
-    path:     /
-    defaults: { _controller: xrowbootstrapBundle:Default:index }
+_xrowbootstrapBundle_test_html:
+    path:   /test/html
+    defaults:  { _controller: xrowbootstrapBundle:Page:index}
+    
+_xrowbootstrapBundle_test_bootstrap:
+    path:   /test/bootstrap
+    defaults:  { _controller: xrowbootstrapBundle:Page:bootstrap}
