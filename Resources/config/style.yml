@@ -1,2 +1,79 @@
-custom-logo:    ../images/logo.png
-custom-font:    \"Courier New\", Courier, monospace
+layout:
+    custom-logo:            ../images/logo.png
+
+    brand-primary:         "#dcdcdc"
+    brand-success:         "#8ac203"
+    brand-info:            "#000000"
+    brand-warning:         "#ee7f01"
+    brand-danger:          "#005899"
+
+    btn-default-color:     "#666666"
+    btn-default-bg:        "#eeeeee"
+    btn-default-border:    "rgba(0, 0, 0, 0)"
+
+    btn-primary-color:     "#fff"
+    btn-primary-bg:        "#af0f1e"
+    btn-primary-border:    "rgba(0, 0, 0, 0)"
+
+    btn-success-color:     "#fff"
+    btn-success-bg:        "#8ac203"
+    btn-success-border:    "rgba(0, 0, 0, 0)"
+
+    btn-warning-color:     "#fff"
+    btn-warning-bg:        "#ee7f01"
+    btn-warning-border:    "rgba(0, 0, 0, 0)"
+
+    btn-danger-color:      "#fff"
+    btn-danger-bg:         "#005899"
+    btn-danger-border:     "rgba(0, 0, 0, 0)"
+
+    btn-info-color:        "#ffffff"
+    btn-info-bg:           "#000000"
+    btn-danger-border:     "rgba(0, 0, 0, 0)"
+
+    border-radius-large:   0px
+    border-radius-small:   0px
+    border-radius-base:    0px
+
+    gray-base:      "#000"
+    gray-darker:    "lighten($gray-base, 13.5%)"  #222
+    gray-dark:      "lighten($gray-base, 20%)"    #333
+    gray:           "lighten($gray-base, 33.5%)"  #555
+    gray-light:     "lighten($gray-base, 46.7%)"  #777
+    gray-lighter:   "lighten($gray-base, 93.5%)"  #eee
+
+    font-family-sans-serif:    "Roboto"
+    font-family-monospace:     Helvetica, Arial, sans
+    #font-family-monospace:    "Roboto"
+    #font-family-sans-serif:   Helvetica, Arial, sans
+    headings-font-family:      Roboto
+    headings-color:            "#333333"
+    font-size-base:            "16px"
+    font-size-large:           "ceil(($font-size-base * 1.375))"
+    font-size-small:           "ceil(($font-size-base * 0.875))"
+    font-size-h1:              "1.625em"
+    font-size-h2:              "1.5em"
+    font-size-h3:              "1.375em"
+    font-size-h4:              "1.25em"
+
+    navbar-inverse-color:                      "#ffffff"
+    navbar-inverse-bg:                         "#000000"
+    navbar-inverse-border:                     "#666666"
+    navbar-inverse-link-color:                 "#ffffff"
+    navbar-inverse-link-hover-color:           "#ffffff"
+    navbar-inverse-link-hover-bg:              "#666666"
+    #navbar-inverse-link-active-color:          $navbar-inverse-link-hover-color"
+    #navbar-inverse-link-active-bg:             darken($navbar-inverse-bg, 10%)"
+    #navbar-inverse-link-disabled-color:        #444"
+    #navbar-inverse-link-disabled-bg:           transparent"
+
+    #navbar-inverse-brand-color:                $navbar-inverse-link-color"
+    #navbar-inverse-brand-hover-color:          #fff"
+    #navbar-inverse-brand-hover-bg:             transparent"
+    
+    #navbar-inverse-toggle-hover-bg:            #333"
+    #navbar-inverse-toggle-icon-bar-bg:         #fff"
+    #navbar-inverse-toggle-border-color:        #333"
+
+    text-color: "#666666"
+    link-color: "#999999"

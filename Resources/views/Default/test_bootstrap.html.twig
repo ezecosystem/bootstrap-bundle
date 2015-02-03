@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bootstrap 101 Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
-    <script src="{{ asset('js/jquery.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-</head>
-
-<body style="padding: 35px;">
-
+{% extends "xrowbootstrapBundle::pagelayout.html.twig" %}
+{% block content %}
     <!--[if lt IE 10]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -25,7 +14,7 @@
 <blockquote>
   <p>Bootstrap TLDR</p>
   <footer>
-    <span class="glyphicon glyphicon-flash"></span>
+    <span class="glyphicon glyphicon-download-alt"></span>
     <a href="http://anvoz.github.io/bootstrap-tldr/" target="_blank">Bootstrap TLDR</a> v3.3.0
   </footer>
   <footer>
@@ -38,7 +27,63 @@
   </footer>
 
 </blockquote>
-
+<ul class="nav nav-pills">
+    <li role="presentation" class="active"><a href="#">Top</a></li>
+    <li role="presentation" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+        CSS <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#typography">Typography</a></li>
+            <li><a href="#tables">Tables</a></li>
+            <li><a href="#forms">Forms</a></li>
+            <li><a href="#buttons">Buttons</a></li>
+            <li><a href="#images">Images</a></li>
+            <li><a href="#helper-classes">Helper classes</a></li>
+        </ul>
+    </li>
+    <li role="presentation" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+        Components <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+        <li><a href="#glyphicons">Glyphicons</a></li>
+        <li><a href="#dropdowns">Dropdowns</a></li>
+        <li><a href="#button-groups">Button groups</a></li>
+        <li><a href="#input-groups">Input groups</a></li>
+        <li><a href="#navs">Navs</a></li>
+        <li><a href="#navbar">Navbar</a></li>
+        <li><a href="#breadcrumbs">Breadcrumbs</a></li>
+        <li><a href="#pagination">Pagination</a></li>
+        <li><a href="#labels">Labels</a></li>
+        <li><a href="#jumbotron">Jumbotron</a></li>
+        <li><a href="#page-header">Page header</a></li>
+        <li><a href="#thumbnails">Thumbnails</a></li>
+        <li><a href="#alerts">Alerts</a></li>
+        <li><a href="#progress-bars">Progress bars</a></li>
+        <li><a href="#media-object">Media object</a></li>
+        <li><a href="#list-group">List group</a></li>
+        <li><a href="#panels">Panels</a></li>
+        <li><a href="#wells">Wells</a></li>
+        </ul>
+    </li>
+        <li role="presentation" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+        Javascript <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+        <li><a href="#js-modals">Modals</a></li>
+        <li><a href="#js-dropdowns">Dropdowns</a></li>
+        <li><a href="#js-tabs">Tabs</a></li>
+        <li><a href="#js-tooltips">Tooltips</a></li>
+        <li><a href="#js-popovers">Popovers</a></li>
+        <li><a href="#js-alerts">Alerts</a></li>
+        <li><a href="#js-buttons">Buttons</a></li>
+        <li><a href="#js-collapse">Collapse</a></li>
+        <li><a href="#js-carousel">Carousel</a></li>
+        </ul>
+    </li>
+</ul>
 
 <h1 class="page-header" id="css">CSS</h1>
 
@@ -2323,74 +2368,6 @@
 <p>Events: <code>slide.bs.carousel</code> <code>slid.bs.carousel</code></p>
 
         </div>
-        <div class="col-md-2">
-<div data-spy="affix">
-<div class="sidebar hidden-print" id="sidebar">
-
-<ul class="nav nav-pills nav-stacked" style="max-width: 300px;">
-    <li role="presentation" class="active"><a href="#">Top</a></li>
-    <li role="presentation" class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-        CSS <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="#typography">Typography</a></li>
-            <li><a href="#tables">Tables</a></li>
-            <li><a href="#forms">Forms</a></li>
-            <li><a href="#buttons">Buttons</a></li>
-            <li><a href="#images">Images</a></li>
-            <li><a href="#helper-classes">Helper classes</a></li>
-        </ul>
-    </li>
-    <li role="presentation" class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-        Components <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-        <li><a href="#glyphicons">Glyphicons</a></li>
-        <li><a href="#dropdowns">Dropdowns</a></li>
-        <li><a href="#button-groups">Button groups</a></li>
-        <li><a href="#input-groups">Input groups</a></li>
-        <li><a href="#navs">Navs</a></li>
-        <li><a href="#navbar">Navbar</a></li>
-        <li><a href="#breadcrumbs">Breadcrumbs</a></li>
-        <li><a href="#pagination">Pagination</a></li>
-        <li><a href="#labels">Labels</a></li>
-        <li><a href="#jumbotron">Jumbotron</a></li>
-        <li><a href="#page-header">Page header</a></li>
-        <li><a href="#thumbnails">Thumbnails</a></li>
-        <li><a href="#alerts">Alerts</a></li>
-        <li><a href="#progress-bars">Progress bars</a></li>
-        <li><a href="#media-object">Media object</a></li>
-        <li><a href="#list-group">List group</a></li>
-        <li><a href="#panels">Panels</a></li>
-        <li><a href="#wells">Wells</a></li>
-        </ul>
-    </li>
-        <li role="presentation" class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-        Javascript <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-        <li><a href="#js-modals">Modals</a></li>
-        <li><a href="#js-dropdowns">Dropdowns</a></li>
-        <li><a href="#js-tabs">Tabs</a></li>
-        <li><a href="#js-tooltips">Tooltips</a></li>
-        <li><a href="#js-popovers">Popovers</a></li>
-        <li><a href="#js-alerts">Alerts</a></li>
-        <li><a href="#js-buttons">Buttons</a></li>
-        <li><a href="#js-collapse">Collapse</a></li>
-        <li><a href="#js-carousel">Carousel</a></li>
-        </ul>
-    </li>
-</ul>
-  
-
-</div>
-
-
-          </div>
-        </div>
       </div>
     </div>
 
@@ -2415,8 +2392,4 @@
 
       </div>
     </div>
-
-  
- 
-</body>
-</html>
+{% endblock %}

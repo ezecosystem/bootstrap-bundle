@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bootstrap 101 Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
-    <script src="{{ asset('js/jquery.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-</head>
-
-<body style="padding: 35px;">
+{% extends "xrowbootstrapBundle::pagelayout.html.twig" %}
+{% block content %}
     {{ knp_menu_render(menu, { 'style': 'pills' }) }}
 <h1>Heading 1</h1>
 <h2>Heading 2</h2>
@@ -351,6 +341,4 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
     <summary>Summary</summary>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 </details>
-    
-</body>
-</html>
+{% endblock %}

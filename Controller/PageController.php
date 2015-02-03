@@ -41,6 +41,16 @@ class PageController extends Controller
         #return $this->render('xrowbootstrapBundle:Default:index.html.twig');
         return $this->render('xrowbootstrapBundle:Default:test_bootstrap.html.twig',array('menu' => $menu));
     }
+
+    public function wuvAction()
+    {
+        return $this->render('xrowbootstrapBundle:Default:test_elemente_wuv.html.twig');
+    }
+    
+    public function wuv_homeAction()
+    {
+        return $this->render('xrowbootstrapBundle:Default:test_home_wuv.html.twig');
+    }
 }
 
 

@@ -24,21 +24,22 @@ class updateCommand extends ContainerAwareCommand
     {
         $yaml = new Parser();
         $output->writeln(dirname(__FILE__));
-        $value = $yaml->parse(file_get_contents(dirname(__FILE__).'/../Resources/config/style.yml'));
-        $parameters = array_keys($value);
+        $yml = $yaml->parse(file_get_contents(dirname(__FILE__).'/../Resources/config/style.yml'));
+        $parameters = $yml["layout"];
         $scss = "";
-        foreach($parameters as $x)
+        $output->writeln(count($parameters) . " Rules found");
+        foreach($parameters as $key=>$value)
         {
-            
-            if((strpos($value[$x], ".jpg") || strpos($value[$x], ".png")) != false)
+            if((strpos($value, ".jpg") || strpos($value, ".png")) != false)
             {
-                $scss .= "\$" . $x . ": url(\"" . $value[$x] . "\");\n";
+                $scss .= "\$" . $key . ": url(\"" . $value . "\");\n";
             }
             else 
             {
-                $scss .= "\$" . $x . ": " . $value[$x] . ";\n";
+                $scss .= "\$" . $key . ": " . $value . ";\n";
             }
         }
+        
         $file = fopen(dirname(__FILE__).'/../../../../web/sass/customVariables.scss', "w") or die("Unable to open file!");
         fwrite($file, $scss);
         fclose($file);
@@ -49,7 +50,7 @@ class updateCommand extends ContainerAwareCommand
         $input = new ArrayInput($arguments);
         $returnCode = $command->run($input, $output);
         if($returnCode == 0) {
-            $output->writeln('styles applied successfully ...');
+            $output->writeln('Styles applied successfully ...');
         }
         
     }
