@@ -38,12 +38,12 @@
         {% endif %}
     {% endblock %}
         {% block topMenu %}
-        {% include 'xrowbootstrapBundle::page_navbar.html.twig' %}
-        {# {{ render(
+        {# {% include 'xrowbootstrapBundle::page_navbar.html.twig' %} #}
+        {{ render(
             controller(
             "xrowbootstrapBundle:Menu:topMenu",{'currentLocationId': currentLocation is defined ? currentLocation.id : null}
             )
-        ) }}  #}
+        ) }} 
     {% endblock %}
     <div class="container marketing">
         <div class="row">
