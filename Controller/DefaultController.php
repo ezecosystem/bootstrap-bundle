@@ -13,21 +13,6 @@ use eZ\Publish\Core\MVC\Symfony\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
-    {
-        $factory = new MenuFactory();
-        $menu = $factory->createItem('Grünzeug Menü');
-        $menu->addChild('Home', array('uri' => '#'));
-        $menu->addChild('Bäume', array('uri' => '#'));
-        $menu->addChild('Blumen', array('uri' => '#'));
-        $menu->addChild('Kräuter', array('uri' => '#'));
-        $menu['Kräuter']->addChild('Suppengrün', array('uri' => '#'));
-        $menu['Kräuter']->addChild('Edelwurz', array('uri' => '#'));
-        $menu['Kräuter']->addChild('Snuff', array('uri' => '#'));
-        #return $this->render('xrowbootstrapBundle:Default:index.html.twig');
-        return $this->render('xrowbootstrapBundle:Default:index.html.twig',array('menu' => $menu));
-    }
-
     public function topMenuAction()
     {
         $rootLocationId = $this->getConfigResolver()->getParameter( 'content.tree_root.location_id' );

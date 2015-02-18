@@ -20,37 +20,39 @@
         {% include 'xrowbootstrapBundle::page_header.html.twig' %}
     {% endblock %} #}
 
- 
+    {% block topMenu %}
+        {# {% include 'xrowbootstrapBundle::page_navbar.html.twig' %} #}
+        {{ render(
+            controller(
+            "xrowbootstrapBundle:Menu:topMenu",{'currentLocationId': currentLocation is defined ? currentLocation.id : null}
+            )
+        ) }}
+    {% endblock %}
 
     {% if pageData is defined and pageData.showPath %}
         {% block path %}
             {% include 'xrowbootstrapBundle::page_toppath.html.twig' %}
         {% endblock %}
     {% endif %}
+    <main>
+        {% block carousel %}
+            {% include 'xrowbootstrapBundle::page_carousel.html.twig' %}
+        {% endblock %}
 
-    {% block carousel %}
-        {% include 'xrowbootstrapBundle::page_carousel.html.twig' %}
-    {% endblock %}
-    
-    {% block breadcrumb %}
-        {% if currentLocation is defined %}
-            {{ render( controller( 'eZDemoBundle:Demo:viewBreadcrumb', { 'locationId': currentLocation.id } ) ) }}
-        {% endif %}
-    {% endblock %}
-        {% block topMenu %}
-        {# {% include 'xrowbootstrapBundle::page_navbar.html.twig' %} #}
-        {{ render(
-            controller(
-            "xrowbootstrapBundle:Menu:topMenu",{'currentLocationId': currentLocation is defined ? currentLocation.id : null}
-            )
-        ) }} 
-    {% endblock %}
-    <div class="container marketing">
-        <div class="row">
-            <div class="col-md-12" style="margin-top: 5%;">
-                {% block content %}{% endblock %}
+        {# {% block breadcrumb %}
+            {% if currentLocation is defined %}
+                {{ render( controller( 'eZDemoBundle:Demo:viewBreadcrumb', { 'locationId': currentLocation.id } ) ) }}
+            {% endif %}
+        {% endblock %} #}
+
+        <div class="container marketing">
+            <div class="row">
+                <div class="col-md-12" style="margin-top: 5%;">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
         </div>
+    </main>
 
     {# {% block footer %}
         {{ render( controller( "eZDemoBundle:Footer:index" ) ) }}
@@ -60,6 +62,5 @@
         {% include 'xrowbootstrapBundle::page_footer_script.html.twig' %}
     {% endblock %} #}
 
-    </div>
 </body>
 </html>

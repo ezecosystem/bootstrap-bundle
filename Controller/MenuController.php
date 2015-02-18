@@ -37,7 +37,10 @@ class MenuController extends Controller
         {
             $parameters['submenu'] = $menu[$secondLevelLocationId];
         }
-
+        if ($currentLocationId != NULL)
+        {
+            $parameters['currentLocationId'] = $currentLocationId;
+        }
         return $this->render( 'xrowbootstrapBundle::page_topmenu.html.twig', $parameters, $response );
     }
 

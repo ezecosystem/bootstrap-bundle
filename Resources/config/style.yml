@@ -78,3 +78,7 @@ layout:
     text-color: "#666666"
     link-color: "#999999"
     dropdown-bg: "#000000"
+    breadcrumb-bg: "#ffffff"
+    breadcrumb-color: "#ffffff"
+    breadcrumb-active-color: "#666666"
+    navbar-margin-bottom: "0"

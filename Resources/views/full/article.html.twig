@@ -1,6 +1,16 @@
 {% extends "xrowbootstrapBundle::pagelayout.html.twig" %}
 {% block content %}
-<h2>{{ ez_render_field( content, 'title' ) }}</h2>             
-<p><b>{{ ez_render_field( content, 'intro' ) }}</b></p>
-<p>{{ ez_render_field( content, 'body' ) }}</p>
+    <h2>
+    {% if not ez_is_field_empty( content, 'title' ) %}
+        {{ ez_render_field( content, 'title' ) }}
+    {% endif %}
+    </h2>
+
+    {% if not ez_is_field_empty( content, 'intro' ) %}
+        {{ ez_render_field( content, 'intro' ) }}
+    {% endif %}
+
+    {% if not ez_is_field_empty( content, 'body' ) %}
+        {{ ez_render_field( content, 'body' ) }}
+    {% endif %}
 {% endblock %}
