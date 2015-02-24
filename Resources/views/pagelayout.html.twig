@@ -12,6 +12,7 @@
     {% include 'xrowbootstrapBundle::page_head_script.html.twig' %}
 </head>
 <body>
+<div class="container">
     {% if location is defined and not location.isDraft %}
         {% set currentLocation=location %}
     {% endif %}
@@ -34,16 +35,18 @@
             {% include 'xrowbootstrapBundle::page_toppath.html.twig' %}
         {% endblock %}
     {% endif %}
+    {% block breadcrumb %}
+    {% if currentLocation is defined %}
+        {{ render( controller( 'eZDemoBundle:Demo:viewBreadcrumb', { 'locationId': currentLocation.id } ) ) }}
+    {% endif %}
+    {% endblock %}
     <main>
+    
         {% block carousel %}
             {% include 'xrowbootstrapBundle::page_carousel.html.twig' %}
         {% endblock %}
 
-        {# {% block breadcrumb %}
-            {% if currentLocation is defined %}
-                {{ render( controller( 'eZDemoBundle:Demo:viewBreadcrumb', { 'locationId': currentLocation.id } ) ) }}
-            {% endif %}
-        {% endblock %} #}
+
 
         <div class="container marketing">
             <div class="row">
@@ -61,6 +64,6 @@
     {# {% block footerScript %}
         {% include 'xrowbootstrapBundle::page_footer_script.html.twig' %}
     {% endblock %} #}
-
+</div>
 </body>
 </html>
