@@ -1,21 +1,21 @@
-        <nav class="navbar navbar-inverse navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <div class="custom-logo"></div>
-                    <a class="navbar-brand" href="/">Project name</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                {{ knp_menu_render(menu, {'depth': 2,'style': 'pills'}) }}
-                {# {% if submenu is defined %}
-                    {{ knp_menu_render(submenu, {'depth': 3,'branch_class': 'nav','style': 'pills'}) }}
-                {% endif %} #}
-                </div>
-            </div>
-        </nav>
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="custom-logo"></div>
+            <a class="navbar-brand" href="/">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        {{ knp_menu_render(menu, {'depth': 2,'style': 'pills'}) }}
+        {# {% if submenu is defined %}
+            {{ knp_menu_render(submenu, {'depth': 3,'branch_class': 'nav','style': 'pills'}) }}
+        {% endif %} #}
+        </div>
+    </div>
+</nav>
 

@@ -1,0 +1,9 @@
+parameters:
+    xrowbootstrap.default.hello: here
+    xrowbootstrap.default.foo_setting:
+        foo: ~
+        some: ~
+        planets: [Earth]
+        an_integer: 0
+        enabled: false
+        j_adore: les_sushis

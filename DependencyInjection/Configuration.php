@@ -19,19 +19,19 @@ class Configuration extends SiteAccessConfiguration
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root( 'acme_demo' );
+        $rootNode = $treeBuilder->root( 'xrowbootstrap' );
 
         // $systemNode will then be the root of siteaccess aware settings.
         $systemNode = $this->generateScopeBaseNode( $rootNode );
         $systemNode
         ->scalarNode( 'hello' )->isRequired()->end()
-        ->arrayNode( 'foo_setting' )
-        ->children()
-        ->scalarNode( "foo" )->end()
-        ->scalarNode( "some" )->end()
-        ->integerNode( "an_integer" )->end()
-        ->booleanNode( "enabled" )->end()
-        ->end()
+            ->arrayNode( 'foo_setting' )
+                ->children()
+                ->scalarNode( "foo" )->end()
+                ->scalarNode( "some" )->end()
+                ->integerNode( "an_integer" )->end()
+                ->booleanNode( "enabled" )->end()
+            ->end()
         ->end();
 
         return $treeBuilder;
