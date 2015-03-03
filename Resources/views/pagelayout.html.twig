@@ -21,14 +21,13 @@
         {% include 'xrowbootstrapBundle::page_header.html.twig' %}
     {% endblock %} #}
 
-    {% block topMenu %}
-        {# {% include 'xrowbootstrapBundle::page_navbar.html.twig' %} #}
+     {% block topMenu %}
         {{ render(
             controller(
             "xrowbootstrapBundle:Menu:topMenu",{'currentLocationId': currentLocation is defined ? currentLocation.id : null}
             )
         ) }}
-    {% endblock %}
+    {% endblock %} 
 
     {% if pageData is defined and pageData.showPath %}
         {% block path %}
