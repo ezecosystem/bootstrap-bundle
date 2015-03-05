@@ -1,13 +1,17 @@
 {% if wo_breadcrumbs()|length %}
-  {% spaceless %}
-    <ol class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-      {% for b in breadcrumbs %}
-        <li{% if not(loop.first) %} itemprop="child"{% endif %}>
-          {% if b.url and not loop.last %}<a href="{{ b.url }}" itemprop="url"{% if linkRel is defined and linkRel|length %} rel="{{ linkRel }}"{% endif %}>{% endif %}
-          <span itemprop="title">{{- b.text | trans(b.translationParameters, translation_domain, locale) -}}</span>
-          {% if b.url and not loop.last %}</a>{% endif %}
-      </li>
-      {% endfor %}
-    </ol>
-  {% endspaceless %}
+    {% spaceless %}
+        <div class="breadcrumb-bg">
+            <div class="container">
+                <ol class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" style="">
+                    {% for b in breadcrumbs %}
+                    <li{% if not(loop.first) %} itemprop="child"{% endif %}>
+                        {% if b.url and not loop.last %}<a href="{{ b.url }}" itemprop="url"{% if linkRel is defined and linkRel|length %} rel="{{ linkRel }}"{% endif %}>{% endif %}
+                        <span itemprop="title">{{- b.text | trans(b.translationParameters, translation_domain, locale) -}}</span>
+                        {% if b.url and not loop.last %}</a>{% endif %}
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    {% endspaceless %}
 {% endif %}

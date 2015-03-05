@@ -7,7 +7,7 @@ layout:
     brand-warning:         "#ee7f01"
     brand-danger:          "#005899"
 
-    btn-default-color:     "#666666"
+    btn-default-color:     "#af0f1e"
     btn-default-bg:        "#eeeeee"
     btn-default-border:    "rgba(0, 0, 0, 0)"
 
@@ -27,9 +27,9 @@ layout:
     btn-danger-bg:         "#005899"
     btn-danger-border:     "rgba(0, 0, 0, 0)"
 
-    btn-info-color:        "#ffffff"
-    btn-info-bg:           "#000000"
-    btn-danger-border:     "rgba(0, 0, 0, 0)"
+    btn-info-color:        "#666666"
+    btn-info-bg:           "#eeeeee"
+    btn-info-border:       "rgba(0, 0, 0, 0)"
 
     border-radius-large:   0px
     border-radius-small:   0px
@@ -77,7 +77,7 @@ layout:
 
     text-color: "#666666"
     link-color: "#999999"
-    dropdown-bg: "#000000"
+    dropdown-bg: "#999999"
     #breadcrumb-bg: "#ffffff"
     #breadcrumb-color: "#666666"
     #breadcrumb-active-color: "#666666"

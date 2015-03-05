@@ -40,7 +40,7 @@ class updateCommand extends ContainerAwareCommand
             }
         }
         
-        $file = fopen(dirname(__FILE__).'/../../../../web/sass/customVariables.scss', "w") or die("Unable to open file!");
+        $file = fopen(dirname(__FILE__).'/../Resources/web/sass/customVariables.scss', "w") or die("Unable to open file!");
         fwrite($file, $scss);
         fclose($file);
         $command = $this->getApplication()->find('assetic:dump');
