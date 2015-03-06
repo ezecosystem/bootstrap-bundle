@@ -6,7 +6,7 @@
  * @license For full copyright and license information view LICENSE file distributd with this source code.
  * @version //autogentag//
  */
-namespace EzSystems\DemoBundle\Menu;
+namespace xrow\bootstrapBundle\Menu;
 
 use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
@@ -113,7 +113,7 @@ class Builder
                     'uri' => $this->router->generate( $location )
                 )
             );
-            $menuItem->setChildrenAttribute( 'class', 'nav-bar' );
+            $menuItem->setChildrenAttribute( 'class', 'navbar-nav' );
         }
     }
 
