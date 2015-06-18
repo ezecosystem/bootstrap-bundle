@@ -1,6 +1,6 @@
 <?php
 
-namespace xrow\bootstrapBundle\DependencyInjection
+namespace xrow\bootstrapBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
