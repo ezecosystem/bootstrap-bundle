@@ -119,8 +119,7 @@ class Builder
     {
         $rootLocation = $this->locationService->loadLocation( $rootLocationId );
         $query = new LocationQuery();
-        $show_in_nav_identifier = $this->container->get( 'xrowbootstrap' );
-        //var_dump($show_in_nav_identifier);
+        $show_in_nav_identifier = $this->container->getParameter('xrowbootstrap.show_navigation_identifier');
         $query->query = new Criterion\LogicalAnd(
             array(
                 new Criterion\ContentTypeIdentifier( $this->getTopMenuContentTypeIdentifierList() ),
