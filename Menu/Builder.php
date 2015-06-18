@@ -21,6 +21,7 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use eZ\Publish\Core\Helper\TranslationHelper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A simple eZ Publish menu provider.
@@ -62,13 +63,19 @@ class Builder
      */
     private $translationHelper;
 
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private $container;
+
     public function __construct(
         FactoryInterface $factory,
         SearchService $searchService,
         RouterInterface $router,
         ConfigResolverInterface $configResolver,
         LocationService $locationService,
-        TranslationHelper $translationHelper
+        TranslationHelper $translationHelper,
+        ContainerInterface $container
     )
     {
         $this->factory = $factory;
@@ -77,6 +84,7 @@ class Builder
         $this->configResolver = $configResolver;
         $this->locationService = $locationService;
         $this->translationHelper = $translationHelper;
+        $this->container = $container;
     }
 
     public function createTopMenu( Request $request )
@@ -125,13 +133,14 @@ class Builder
     private function getMenuItems( $rootLocationId )
     {
         $rootLocation = $this->locationService->loadLocation( $rootLocationId );
-
         $query = new LocationQuery();
-
+        $show_in_nav_identifier = $this->container->getParameter( 'xrow_bootstrap.test' );
+        var_dump($show_in_nav_identifier);
         $query->query = new Criterion\LogicalAnd(
             array(
                 new Criterion\ContentTypeIdentifier( $this->getTopMenuContentTypeIdentifierList() ),
                 new Criterion\Visibility( Criterion\Visibility::VISIBLE ),
+                new Criterion\Field( $show_in_nav_identifier, Criterion\Operator::EQ, true),
                 new Criterion\Location\Depth(
                     Criterion\Operator::BETWEEN,
                     array( $rootLocation->depth + 1, $rootLocation->depth + 2 )

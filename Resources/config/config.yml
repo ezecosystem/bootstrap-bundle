@@ -1,0 +1,6 @@
+imports:
+    - { resource: services.yml }
+
+xrowbootstrap:
+    options:
+        show_navigation_identifier: show_in_navigation

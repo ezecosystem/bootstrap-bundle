@@ -40,11 +40,6 @@ class MenuController extends Controller
         {
             $parameters['currentLocationId'] = $currentLocationId;
         }
-            #$configResolver = $this->getConfigResolver();
-            #$siteaccess = $configResolver->getParameter( 'hello', 'xrowbootstrap' );
-            #$parameters['siteaccess'] = $siteaccess;
-
-            #var_dump($siteaccess);
         return $this->render( 'xrowbootstrapBundle::page_topmenu.html.twig', $parameters, $response );
     }
 
@@ -54,7 +49,7 @@ class MenuController extends Controller
      */
     private function getMenu( $identifier )
     {
-        return $this->container->get( "ezdemo.menu.$identifier" );
+        return $this->container->get( "xrow.menu.$identifier" );
     }
 
     /**
