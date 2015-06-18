@@ -1,11 +1,4 @@
 <?php
-/**
- * This file is part of the DemoBundle package
- *
- * @copyright Copyright (C) eZ Systems AS. All rights reserved.
- * @license For full copyright and license information view LICENSE file distributd with this source code.
- * @version //autogentag//
- */
 namespace xrow\bootstrapBundle\Menu;
 
 use eZ\Publish\API\Repository\LocationService;
@@ -23,14 +16,6 @@ use Symfony\Component\Routing\RouterInterface;
 use eZ\Publish\Core\Helper\TranslationHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * A simple eZ Publish menu provider.
- *
- * Generates a two level menu, starting from the configured root node.
- * Locations below the root node and until a relative depth of 2 are included.
- * Only visible locations with a ContentType included in `MenuContentSettings.TopIdentifierList` in legacy's `menu.ini`
- * are included.
- */
 class Builder
 {
     /**
@@ -134,8 +119,8 @@ class Builder
     {
         $rootLocation = $this->locationService->loadLocation( $rootLocationId );
         $query = new LocationQuery();
-        $show_in_nav_identifier = $this->container->getParameter( 'xrow_bootstrap.test' );
-        var_dump($show_in_nav_identifier);
+        $show_in_nav_identifier = $this->container->get( 'xrowbootstrap' );
+        //var_dump($show_in_nav_identifier);
         $query->query = new Criterion\LogicalAnd(
             array(
                 new Criterion\ContentTypeIdentifier( $this->getTopMenuContentTypeIdentifierList() ),

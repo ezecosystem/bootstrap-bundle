@@ -21,13 +21,13 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('xrowbootstrap');
 
         $rootNode
-        ->children()
-        ->arrayNode('options')
-        ->children()
-        ->scalarNode('show_navigation_identifier')->defaultNull()->end()
-        ->end()
-        ->end()
-        ->end();
+            ->children()
+                ->arrayNode('options')
+                    ->children()
+                        ->scalarNode('show_navigation_identifier')->defaultNull()->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

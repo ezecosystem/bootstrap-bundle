@@ -1,16 +1,10 @@
 <?php
-/**
- * This file is part of the DemoBundle package
- *
- * @copyright Copyright (C) eZ Systems AS. All rights reserved.
- * @license For full copyright and license information view LICENSE file distributd with this source code.
- * @version //autogentag//
- */
 namespace xrow\bootstrapBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use eZ\Bundle\EzPublishCoreBundle\Controller;
+#use eZ\Bundle\EzPublishCoreBundle\Controller;
 
 class MenuController extends Controller
 {
@@ -65,11 +59,11 @@ class MenuController extends Controller
         /** @var WhiteOctober\BreadcrumbsBundle\Templating\Helper\BreadcrumbsHelper $breadcrumbs */
         $breadcrumbs = $this->get( "white_october_breadcrumbs" );
     
-        $locationService = $this->getRepository()->getLocationService();
+        $locationService = $this->getLocationService();
         $path = $locationService->loadLocation( $locationId )->path;
     
         // The root location can be defined at site access level
-        $rootLocationId = $this->getConfigResolver()->getParameter( 'content.tree_root.location_id' );
+        $rootLocationId = $this->get( 'ezpublish.config.resolver' )->getParameter( 'content.tree_root.location_id' );
     
         /** @var eZ\Publish\Core\Helper\TranslationHelper $translationHelper */
         $translationHelper = $this->get( 'ezpublish.translation_helper' );

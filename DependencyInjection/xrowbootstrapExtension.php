@@ -2,12 +2,13 @@
 
 namespace xrow\bootstrapBundle\DependencyInjection;
 
-use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
-use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ContextualizerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -27,9 +28,9 @@ class xrowbootstrapExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('config.yml');
         
-        die(var_dump($config));
+        #die(var_dump($config));
         if (null !== $config['options']['show_navigation_identifier']) {
-            $container->setParameter('xrow_bootstrap.options.show_navigation_identifier', $config['options']['show_navigation_identifier']);
+            $container->setParameter('xrowbootstrap.options.show_navigation_identifier', $config['options']['show_navigation_identifier']);
         }
     }
 
