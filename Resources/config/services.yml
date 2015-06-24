@@ -20,3 +20,15 @@ services:
         scope: request # needed as we have the request as a dependency here
         tags:
             - { name: knp_menu.menu, alias: top } # The alias is what is used to retrieve the menu
+
+    xrow.twig_extension:
+        class: xrow\bootstrapBundle\Twig\TwigExtension
+        arguments: [@service_container]
+        tags:
+            - { name: twig.extension }
+
+    xrow.helper.content:
+        class: xrow\bootstrapBundle\Helper\Content
+        arguments:
+            - @ezpublish.api.repository
+            - @ezpublish.config.resolver
