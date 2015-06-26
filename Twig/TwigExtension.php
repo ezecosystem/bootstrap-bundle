@@ -3,7 +3,6 @@
 namespace xrow\bootstrapBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use xrow\bootstrapBundle\Helper\Content as ContentHelper;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;

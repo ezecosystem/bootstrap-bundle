@@ -2,7 +2,8 @@
 
 namespace xrow\bootstrapBundle\Helper;
 
-use eZ\Publish\API\Repository\Values\Content\Query;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\API\Repository\Repository as RepositoryInterface;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
@@ -41,11 +42,16 @@ class Content
      */
     public function contentTree($parentLocationId, array $typeIdentifiers, $sortField, $sortType, $limit = null, $offset = 0, $showHidden = false, $depth = false)
     {
+        $location = $this->repository->getLocationService()->loadLocation($parentLocationId);
+        if ($location->invisible && $showHidden === false) {
+            throw new NotFoundHttpException("Location #$parentLocationId cannot be displayed as it is flagged as invisible.");
+        }
+        $languages = $this->configResolver->getParameter('languages');
         $searchService = $this->repository->getSearchService();
-        $query = new Query();
+        $query = new LocationQuery();
         $criterion = array(
                         new Criterion\ContentTypeIdentifier($typeIdentifiers),
-                        new Criterion\LanguageCode($this->configResolver->getParameter('languages'))
+                        new Criterion\LanguageCode($languages)
                      );
         switch ($depth){
             // get direct children of a loaction
@@ -64,33 +70,42 @@ class Content
         }
         $query->criterion = new Criterion\LogicalAnd($criterion);
         if (!empty($sortField)) {
+            $sortOrder = Query::SORT_ASC;
+            if (!empty($sortType)) {
+                if (strtoupper($sortType) == 'DESC' || strtoupper($sortType) == 'DESCENDING' || strtoupper($sortType) == 0)
+                    $sortOrder = Query::SORT_DESC;
+            }
             switch ($sortField){
                 case 'published':
-                    $sort = new SortClause\DatePublished($sortType);
+                    $sort = new Query\SortClause\DatePublished($sortOrder);
                     break;
+                case 'modified':
+                    $sort = new Query\SortClause\DateModified($sortOrder);
                 case 'priority':
-                    $sort = new SortClause\LocationPriority($sortType);
+                    $sort = new Query\SortClause\Location\Priority($sortOrder);
                     break;
                 case 'name':
-                    $sort = new SortClause\ContentName($sortType);
+                    $sort = new Query\SortClause\ContentName($sortOrder);
                     break;
                 default:
                     if (count($typeIdentifiers) == 1)
-                        $sort = new SortClause\Field($typeIdentifiers[0], $sortField, $sortType);
+                        $sort = new Query\SortClause\Field($typeIdentifiers[0], $sortField, $sortOrder);
                     break;
             }
             if (isset($sort))
-                $query->sortClauses = $sort;
+                $query->sortClauses = array($sort);
         }
         $query->limit = $limit;
         $query->offset = $offset;
         if ($showHidden !== false) {
             $query->filter = new Criterion\Visibility(Criterion\Visibility::HIDDEN);
         }
-        $results = $searchService->findContent($query);
+        $results = $searchService->findLocations($query);
         $children = array();
         foreach ($results->searchHits as $hit) {
-            $children[] = $hit->valueObject;
+            $children[] = $this->repository->getContentService()->loadContentByContentInfo(
+                                                $hit->valueObject->getContentInfo(),
+                                                $languages);
         }
         return $children;
     }

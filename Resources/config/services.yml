@@ -23,7 +23,8 @@ services:
 
     xrow.twig_extension:
         class: xrow\bootstrapBundle\Twig\TwigExtension
-        arguments: [@service_container]
+        arguments: 
+            - @service_container
         tags:
             - { name: twig.extension }
 
