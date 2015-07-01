@@ -1,15 +1,7 @@
 _xrowbootstrapBundle_test_html:
-    path:   /test/html
-    defaults:  { _controller: xrowbootstrapBundle:Page:index}
+    path:   test/html
+    defaults:  { _controller: xrowbootstrapBundle:Page:index }
     
 _xrowbootstrapBundle_test_bootstrap:
-    path:   /test/bootstrap
-    defaults:  { _controller: xrowbootstrapBundle:Page:bootstrap}
-
-_xrowbootstrapBundle_test_wuv:
-    path:   /test/wuv
-    defaults:  { _controller: xrowbootstrapBundle:Page:wuv}
-
-_xrowbootstrapBundle_test_home_wuv:
-    path:   /test/wuv_home
-    defaults:  { _controller: xrowbootstrapBundle:Page:wuv_home}
+    path:   test/bootstrap
+    defaults:  { _controller: xrowbootstrapBundle:Page:bootstrap }
