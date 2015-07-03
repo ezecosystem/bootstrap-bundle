@@ -6,5 +6,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class xrowbootstrapBundle extends Bundle
 {
-    protected $name = 'xrowbootstrapBundle';
+    /**
+     * {@inheritDoc}
+     */
+    public function getContainerExtension()
+    {
+        return new DependencyInjection\xrowbootstrapExtension();
+    }
 }

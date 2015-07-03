@@ -119,20 +119,20 @@ class Builder
     {
         $rootLocation = $this->locationService->loadLocation( $rootLocationId );
         $query = new LocationQuery();
-        $show_in_nav_identifier = $this->container->getParameter('xrowbootstrap.show_navigation_identifier');
-        $query->query = new Criterion\LogicalAnd(
-            array(
+        $criterion = array(
                 new Criterion\ContentTypeIdentifier( $this->getTopMenuContentTypeIdentifierList() ),
                 new Criterion\Visibility( Criterion\Visibility::VISIBLE ),
-                new Criterion\Field( $show_in_nav_identifier, Criterion\Operator::EQ, true),
                 new Criterion\Location\Depth(
                     Criterion\Operator::BETWEEN,
                     array( $rootLocation->depth + 1, $rootLocation->depth + 2 )
                 ),
                 new Criterion\Subtree( $rootLocation->pathString ),
                 new Criterion\LanguageCode( $this->configResolver->getParameter( 'languages' ) )
-            )
         );
+        if ($this->container->hasParameter('xrowbootstrap.show_navigation_identifier') && $this->container->getParameter('xrowbootstrap.show_navigation_identifier') !== null) {
+            $criterion[] = new Criterion\Field($this->container->getParameter('xrowbootstrap.show_navigation_identifier'), Criterion\Operator::EQ, true);
+        }
+        $query->query = new Criterion\LogicalAnd($criterion);
         $query->sortClauses = array( new Query\SortClause\Location\Path() );
 
         return $this->searchService->findLocations( $query )->searchHits;

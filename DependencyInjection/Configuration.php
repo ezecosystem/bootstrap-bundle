@@ -13,22 +13,29 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
+     * @var string
+     */
+    private $rootIdentifier;
+
+    /**
+     * @param string $rootIdentifier
+     */
+    public function __construct($rootIdentifier)
+    {
+        $this->rootIdentifier = $rootIdentifier;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('xrowbootstrap');
-
+        $rootNode = $treeBuilder->root($this->rootIdentifier);
         $rootNode
             ->children()
-                ->arrayNode('options')
-                    ->children()
-                        ->scalarNode('show_navigation_identifier')->defaultNull()->end()
-                    ->end()
-                ->end()
+                ->scalarNode('show_navigation_identifier')->defaultNull()->end()
             ->end();
-
         return $treeBuilder;
     }
 }
