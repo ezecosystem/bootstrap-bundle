@@ -72,16 +72,19 @@ class Builder
         $this->container = $container;
     }
 
-    public function createTopMenu( Request $request )
+    public function createTopMenu( Request $request)
     {
         $menu = $this->factory->createItem( 'root' );
-        $this->addLocationsToMenu(
+        $currentLocationId = $request->attributes->get( 'currentLocationId' );
+        $this->addLocationsToMenu( 
             $menu,
             $this->getMenuItems(
                 $this->configResolver->getParameter( 'content.tree_root.location_id' )
-            )
+            ),
+            $currentLocationId
         );
 
+       
         return $menu;
     }
 
@@ -92,7 +95,7 @@ class Builder
      * @param SearchHit[] $searchHits
      * @return void
      */
-    private function addLocationsToMenu( ItemInterface $menu, array $searchHits )
+    private function addLocationsToMenu( ItemInterface $menu, array $searchHits, $currentLocationId = null )
     {
         foreach ( $searchHits as $searchHit )
         {
@@ -106,6 +109,10 @@ class Builder
                     'uri' => $this->router->generate( $location )
                 )
             );
+            if ($location->id == $currentLocationId)
+            {
+                $menuItem[$location->id]->setCurrent(true);
+            }
             $menuItem->setChildrenAttribute( 'class', 'navbar-nav' );
         }
     }

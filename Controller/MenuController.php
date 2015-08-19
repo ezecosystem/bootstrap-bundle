@@ -14,21 +14,22 @@ class MenuController extends Controller
      */
     public function topMenuAction($currentLocationId)
     {
-        if ($currentLocationId !== null) {
-            $location = $this->getLocationService()->loadLocation($currentLocationId);
-            if (isset($location->path[2])) {
+        if ($currentLocationId !== null)
+        {
+            $location = $this->getLocationService()->loadLocation( $currentLocationId );
+            if (isset($location->path[2]))
+            {
                 $secondLevelLocationId = $location->path[2];
             }
         }
 
-        $response = new Response();
-        $menu = $this->getMenu('top');
-        $parameters = array( 'menu' => $menu );
-        if (isset($secondLevelLocationId) && isset($menu[$secondLevelLocationId])) {
+        $response = new Response;
+
+        $menu = $this->getMenu( 'top' );
+        $parameters = array( 'menu' => $menu);
+        if ( isset( $secondLevelLocationId ) && isset( $menu[$secondLevelLocationId] ) )
+        {
             $parameters['submenu'] = $menu[$secondLevelLocationId];
-        }
-        if ($currentLocationId != NULL) {
-            $parameters['currentLocationId'] = $currentLocationId;
         }
         return $this->render('xrowbootstrapBundle::page_topmenu.html.twig', $parameters, $response);
     }
