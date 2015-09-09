@@ -3,6 +3,10 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "description": "The xrow bundle",
+    "require": {
+        "braincrafted/bootstrap-bundle": "2.1.2",
+        "twbs/bootstrap-sass": "v3.3.4"
+    },
     "autoload": {
         "psr-4": { "xrow\\bootstrapBundle\\": "" }
     }
