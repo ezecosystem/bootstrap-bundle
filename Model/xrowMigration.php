@@ -11,10 +11,6 @@ abstract class xrowMigration extends AbstractMigration implements ContainerAware
 {
     private $container;
 
-    public function up(Schema $schema){}
-
-    public function down(Schema $schema){}
-
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
