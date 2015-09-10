@@ -6,6 +6,7 @@ use Doctrine\DBAL\Schema\Schema;
 use eZ\Publish\Core\Base\Exceptions\NotFoundException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class xrowMigration extends AbstractMigration implements ContainerAwareInterface
 {
@@ -29,24 +30,37 @@ abstract class xrowMigration extends AbstractMigration implements ContainerAware
      *
      * @throws -
      */
-    public function removeFieldDefinition($contentTypeIdentifier, $fieldDefinitionIdentifier )
+    public function removeFieldDefinition($contentTypeIdentifier, $fieldDefinitionIdentifier)
     {
-        $repository = $this->container->get( 'ezpublish.api.repository' );
+        $repository = $this->container->get('ezpublish.api.repository');
+        try
+        {
+            $repository->setCurrentUser($repository->getUserService()->loadUser(141333));
 
-        $repository->setCurrentUser( $repository->getUserService()->loadUser( 141333 ) );
+            $contentTypeService = $repository->getContentTypeService();
+            $contentType = $contentTypeService->loadContentTypeByIdentifier($contentTypeIdentifier);
 
-        $contentTypeService = $repository->getContentTypeService();
-        $contentType = $contentTypeService->loadContentTypeByIdentifier($contentTypeIdentifier);
+            // Get the field definition that will be deleted
+            $fieldDefinition = $contentType->fieldDefinitionsByIdentifier[$fieldDefinitionIdentifier];
 
-        // Get the field definition that will be deleted
-        $fieldDefinition = $contentType->fieldDefinitionsByIdentifier[$fieldDefinitionIdentifier];
+            // Create a draft
+            $contentTypeDraft = $contentTypeService->createContentTypeDraft($contentType);
 
-        // Create a draft
-        $contentTypeDraft = $contentTypeService->createContentTypeDraft($contentType);
-
-        $contentTypeService->removeFieldDefinition($contentTypeDraft,$fieldDefinition);
-        $contentTypeService->publishContentTypeDraft($contentTypeDraft);
-
+            $contentTypeService->removeFieldDefinition($contentTypeDraft,$fieldDefinition);
+            $contentTypeService->publishContentTypeDraft($contentTypeDraft);
+        }
+        catch (\eZ\Publish\API\Repository\Exceptions\NotFoundException $e)
+        {
+            $this->abortIf(true, "MIGRATION ABORTED: " . $e->getMessage());
+        }
+        catch (\eZ\Publish\API\Repository\Exceptions\UnauthorizedException $e)
+        {
+            $this->abortIf(true, "MIGRATION ABORTED: " . $e->getMessage());
+        }
+        catch (\eZ\Publish\API\Repository\Exceptions\ForbiddenException $e)
+        {
+            $this->abortIf(true, "MIGRATION ABORTED: " . $e->getMessage());
+        }
     }
 
     /**
@@ -59,20 +73,32 @@ abstract class xrowMigration extends AbstractMigration implements ContainerAware
      */
     public function addFieldDefinition($contentTypeIdentifier, $fieldCreateStruct)
     {
-        $repository = $this->container->get( 'ezpublish.api.repository' );
+        $repository = $this->container->get('ezpublish.api.repository');
+        try
+        {
+            $repository->setCurrentUser($repository->getUserService()->loadUser(141333));
+            $contentTypeService = $repository->getContentTypeService();
+            $contentType = $contentTypeService->loadContentTypeByIdentifier($contentTypeIdentifier);
 
-        $repository->setCurrentUser( $repository->getUserService()->loadUser( 141333 ) );
-        
-        $contentTypeService = $repository->getContentTypeService();
-        $contentType = $contentTypeService->loadContentTypeByIdentifier($contentTypeIdentifier);
-        
-        // Create a draft
-        $contentTypeDraft = $contentTypeService->createContentTypeDraft($contentType);
+            // Create a draft
+            $contentTypeDraft = $contentTypeService->createContentTypeDraft($contentType);
 
-        // Add the field to the draft
-        $contentTypeService->addFieldDefinition($contentTypeDraft, $fieldCreateStruct);
-        
-        $contentTypeService->publishContentTypeDraft($contentTypeDraft);
+            // Add the field to the draft
+            $contentTypeService->addFieldDefinition($contentTypeDraft, $fieldCreateStruct);
 
+            $contentTypeService->publishContentTypeDraft($contentTypeDraft);
+        }
+        catch (\eZ\Publish\API\Repository\Exceptions\NotFoundException $e)
+        {
+            $this->abortIf(true, "MIGRATION ABORTED: " . $e->getMessage());
+        }
+        catch (\eZ\Publish\API\Repository\Exceptions\UnauthorizedException $e)
+        {
+            $this->abortIf(true, "MIGRATION ABORTED: " . $e->getMessage());
+        }
+        catch (\eZ\Publish\API\Repository\Exceptions\ForbiddenException $e)
+        {
+            $this->abortIf(true, "MIGRATION ABORTED: " . $e->getMessage());
+        }
     }
 }
