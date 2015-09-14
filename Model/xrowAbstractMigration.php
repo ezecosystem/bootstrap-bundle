@@ -34,7 +34,7 @@ abstract class xrowAbstractMigration extends AbstractMigration implements Contai
     {
         if(preg_match("/^.*\.(sh)$/i", $path) === 1)
         {
-            $process = new Process("sh " . $path . $parameters);
+            $process = new Process($path . $parameters);
             $process->run();
             if (!$process->isSuccessful()) {
                 throw new \RuntimeException($process->getErrorOutput());
