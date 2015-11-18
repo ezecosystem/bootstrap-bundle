@@ -12,7 +12,7 @@ class MenuController extends Controller
      * @param mixed|null $currentLocationId
      * @return Response
      */
-    public function topMenuAction($currentLocationId)
+    public function topMenuAction($currentLocationId = null)
     {
         if ($currentLocationId !== null)
         {
