@@ -140,7 +140,7 @@ class Builder
             $criterion[] = new Criterion\Field($this->container->getParameter('xrowbootstrap.show_navigation_identifier'), Criterion\Operator::EQ, true);
         }
         $query->query = new Criterion\LogicalAnd($criterion);
-        $query->sortClauses = array( new Query\SortClause\Location\Path() );
+        $query->sortClauses = array($this->getSortClauseBySortField($rootLocation->sortField, $rootLocation->sortOrder));
 
         return $this->searchService->findLocations( $query )->searchHits;
     }
@@ -148,5 +148,58 @@ class Builder
     private function getTopMenuContentTypeIdentifierList()
     {
         return $this->configResolver->getParameter( 'MenuContentSettings.TopIdentifierList', 'menu' );
+    }
+
+    /**
+     * Instantiates a correct sort clause object based on provided location sort field and sort order.
+     *
+     * @param int $sortField
+     * @param int $sortOrder
+     *
+     * @return \eZ\Publish\API\Repository\Values\Content\Query\SortClause
+     */
+    protected function getSortClauseBySortField($sortField, $sortOrder = Location::SORT_ORDER_ASC)
+    {
+        $sortOrder = $sortOrder == Location::SORT_ORDER_DESC ? Query::SORT_DESC : Query::SORT_ASC;
+        switch ($sortField) {
+            case Location::SORT_FIELD_PATH:
+                return new Query\SortClause\Location\Path($sortOrder);
+
+            case Location::SORT_FIELD_PUBLISHED:
+                return new Query\SortClause\DatePublished($sortOrder);
+
+            case Location::SORT_FIELD_MODIFIED:
+                return new Query\SortClause\DateModified($sortOrder);
+
+            case Location::SORT_FIELD_SECTION:
+                return new Query\SortClause\SectionIdentifier($sortOrder);
+
+            case Location::SORT_FIELD_DEPTH:
+                return new Query\SortClause\Location\Depth($sortOrder);
+
+            //@todo: sort clause not yet implemented
+            // case Location::SORT_FIELD_CLASS_IDENTIFIER:
+
+            //@todo: sort clause not yet implemented
+            // case Location::SORT_FIELD_CLASS_NAME:
+
+            case Location::SORT_FIELD_PRIORITY:
+                return new Query\SortClause\Location\Priority($sortOrder);
+
+            case Location::SORT_FIELD_NAME:
+                return new Query\SortClause\ContentName($sortOrder);
+
+            //@todo: sort clause not yet implemented
+            // case Location::SORT_FIELD_MODIFIED_SUBNODE:
+
+            case Location::SORT_FIELD_NODE_ID:
+                return new Query\SortClause\Location\Id($sortOrder);
+
+            case Location::SORT_FIELD_CONTENTOBJECT_ID:
+                return new Query\SortClause\ContentId($sortOrder);
+
+            default:
+                return new Query\SortClause\Location\Path($sortOrder);
+        }
     }
 }
