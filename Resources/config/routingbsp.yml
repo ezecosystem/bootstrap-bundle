@@ -1,7 +1,11 @@
 _xrowbootstrapBundle_test_html:
     path:   test/html
     defaults:  { _controller: xrowbootstrapBundle:Page:index }
-    
+
 _xrowbootstrapBundle_test_bootstrap:
     path:   test/bootstrap
     defaults:  { _controller: xrowbootstrapBundle:Page:bootstrap }
+
+remoteController:
+    resource:   "@xrowbootstrapBundle/Controller/RemoteController.php"
+    type:       annotation
