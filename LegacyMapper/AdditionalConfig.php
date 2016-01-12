@@ -26,7 +26,7 @@ use RuntimeException;
 /**
  * Maps configuration parameters to the legacy parameters
  */
-class Configuration extends ContainerAware implements EventSubscriberInterface
+class AdditionalConfig extends ContainerAware implements EventSubscriberInterface
 {
     /**
      * @var \eZ\Publish\Core\MVC\ConfigResolverInterface
