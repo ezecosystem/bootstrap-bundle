@@ -28,7 +28,7 @@ services:
             - @ezpublish.config.resolver
 
     xrow.configuration_mapper:
-        class: xrow\LegacyMapper\AdditionalConfig
+        class: xrow\bootstrapBundle\LegacyMapper\AdditionalConfig
         arguments:
             - @ezpublish.config.resolver.core
             - @ezpublish.http_cache.purger
