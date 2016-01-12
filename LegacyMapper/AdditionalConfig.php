@@ -7,7 +7,7 @@
  * @version //autogentag//
  */
 
-namespace xrow\LegacyMapper;
+namespace xrow\bootstrapBundle\LegacyMapper;
 
 use eZ\Publish\Core\FieldType\Image\AliasCleanerInterface;
 use eZ\Publish\Core\MVC\Legacy\LegacyEvents;
