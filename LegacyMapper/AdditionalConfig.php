@@ -113,7 +113,9 @@ class Configuration extends ContainerAware implements EventSubscriberInterface
      */
     public function onBuildKernel( PreBuildKernelEvent $event )
     {
-        $settings['site.ini/MailSettings/TransportServer'] = $this->configResolver->getParameter( 'mailsettings.transportserver' );
+        $settings['site.ini/MailSettings/TransportServer'] = $this->container->getParameter( 'xrowbootstrap.mailsettings.TransportServer' );
+        $settings['solr.ini/SolrBase/SearchServerURI'] = $this->container->getParameter( 'xrowbootstrap.solr.BaseSearchServerURI' );
+        $settings['solr.ini/SolrBaseEvents/SearchServerURI'] = $this->container->getParameter( 'xrowbootstrap.solr.EventSearchServerURI' );
 
         $event->getParameters()->set(
             "injected-settings",
