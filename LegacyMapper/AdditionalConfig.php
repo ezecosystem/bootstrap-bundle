@@ -116,6 +116,7 @@ class AdditionalConfig extends ContainerAware implements EventSubscriberInterfac
         $settings['site.ini/MailSettings/TransportServer'] = $this->container->getParameter( 'xrowbootstrap.mailsettings.TransportServer' );
         $settings['solr.ini/SolrBase/SearchServerURI'] = $this->container->getParameter( 'xrowbootstrap.solr.BaseSearchServerURI' );
         $settings['solr.ini/SolrBaseEvents/SearchServerURI'] = $this->container->getParameter( 'xrowbootstrap.solr.EventSearchServerURI' );
+        $settings['file.ini/eZDFSClusteringSettings/DBHost'] = $this->container->getParameter( 'xrowbootstrap.cluster.DBHost' );
 
         $event->getParameters()->set(
             "injected-settings",

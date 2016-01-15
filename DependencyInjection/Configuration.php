@@ -46,6 +46,11 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode( 'EventSearchServerURI' )->end()
                     ->end()
                 ->end()
+                ->arrayNode( 'cluster' )
+                    ->children()
+                        ->scalarNode( 'DBHost' )->end()
+                    ->end()
+                ->end()
             ->end();
         return $treeBuilder;
     }
