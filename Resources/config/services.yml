@@ -26,3 +26,19 @@ services:
         arguments:
             - @ezpublish.api.repository
             - @ezpublish.config.resolver
+
+    xrow.configuration_mapper:
+        class: xrow\bootstrapBundle\LegacyMapper\AdditionalConfig
+        arguments:
+            - @ezpublish.config.resolver.core
+            - @ezpublish.http_cache.purger
+            - @ezpublish_legacy.persistence_cache_purger
+            - @ezpublish.urlalias_generator
+            - @ezpublish.api.storage_engine.legacy.dbhandler
+            - @ezpublish_legacy.image_alias.cleaner
+            - %ezpublish_legacy.configuration_mapper.options%
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }
+    

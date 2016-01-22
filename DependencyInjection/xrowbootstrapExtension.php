@@ -22,7 +22,13 @@ class xrowbootstrapExtension extends Extension
         $configuration = new Configuration($this->getAlias());
         $config = $this->processConfiguration($configuration, $configs);
         foreach ($config as $key => $value) {
-            $container->setParameter($this->getAlias().'.'.$key, $value);
+            if (is_array($value) || is_object($value)) {
+                foreach ($value as $key2 => $value2) {
+                    $container->setParameter($this->getAlias().'.'.$key.'.'.$key2, $value2);
+                }
+            }
+            else
+                $container->setParameter($this->getAlias().'.'.$key, $value);
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

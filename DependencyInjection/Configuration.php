@@ -35,6 +35,22 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('show_navigation_identifier')->defaultNull()->end()
+                ->arrayNode( 'mailsettings' )
+                    ->children()
+                        ->scalarNode( 'TransportServer' )->end()
+                    ->end()
+                ->end()
+                ->arrayNode( 'solr' )
+                    ->children()
+                        ->scalarNode( 'BaseSearchServerURI' )->end()
+                        ->scalarNode( 'EventSearchServerURI' )->end()
+                    ->end()
+                ->end()
+                ->arrayNode( 'cluster' )
+                    ->children()
+                        ->scalarNode( 'DBHost' )->end()
+                    ->end()
+                ->end()
             ->end();
         return $treeBuilder;
     }

@@ -1,0 +1,2 @@
+enable the bundle in "ezpublish\EzPublishKernel.php"
+new xrow\bootstrapBundle\xrowbootstrapBundle(),
