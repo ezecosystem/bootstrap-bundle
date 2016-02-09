@@ -14,7 +14,7 @@ class cacheCommand extends ContainerAwareCommand
     {
         $this
             ->setName('xrowcache:ezdfsfile:clear')
-            ->setDescription('Clear the ezdfsfile cache');
+            ->setDescription('Truncate (clear) the ezdfsfile cache');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -22,9 +22,7 @@ class cacheCommand extends ContainerAwareCommand
         $this->container = $this->getApplication()->getKernel()->getContainer();
         $connection = $this->container->get('doctrine.dbal.cluster_connection');
         $dbPlatform = $connection->getDatabasePlatform();
-        $connection->query('SET FOREIGN_KEY_CHECKS=0');
         $query = $dbPlatform->getTruncateTableSql('ezdfsfile_cache');
         $connection->executeUpdate($query);
-        $connection->query('SET FOREIGN_KEY_CHECKS=1');
     }
 }
