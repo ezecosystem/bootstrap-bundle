@@ -10,10 +10,6 @@ use Symfony\Component\Validator\Constraint;
 
 class CheckXSS extends Constraint
 {
-    
-    /**
-     * @Assert\NotBlank(message = "xrowbootstrap.checkxss.invalidcharacters")
-     */
     public $message;
     
     public function validatedBy()
