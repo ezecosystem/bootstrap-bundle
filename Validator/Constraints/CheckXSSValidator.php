@@ -17,7 +17,7 @@ class CheckXSSValidator extends ConstraintValidator
     
     public function validate($input, Constraint $constraint)
     {
-        if ( preg_match("/.*(<|>|:|\(\)).*/", $input) ) {
+        if ( preg_match("/.*(<|>|\(\)|;).*/", $input) ) {
             $this->context->addViolation($constraint->message);
         }
     }
