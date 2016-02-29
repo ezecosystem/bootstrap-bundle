@@ -26,11 +26,6 @@ services:
         arguments:
             - @ezpublish.api.repository
             - @ezpublish.config.resolver
-    xrow.bootstrap:
-        class: xrow\bootstrapBundle\Twig\TwigFiltersExtension
-        public: false
-        tags:
-            - { name: twig.extension }
     xrow.configuration_mapper:
         class: xrow\bootstrapBundle\LegacyMapper\AdditionalConfig
         arguments:
