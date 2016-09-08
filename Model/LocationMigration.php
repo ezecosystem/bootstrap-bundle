@@ -107,8 +107,8 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
      */
     public function copyLocation()
     {
-        // Get ContentTypeService
-        $contentTypeService = $this->getContentTypeService();
+        // Get LocationService
+        $contentTypeService = $this->getLocationService();
 
         // Get data with location to copy from/to
         $copy = $this->getCopyData();
@@ -135,8 +135,8 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
      */
     public function moveLocation()
     {
-        // Get ContentTypeService
-        $contentTypeService = $this->getContentTypeService();
+        // Get LocationService
+        $contentTypeService = $this->getLocationService();
 
         // Get data with location to move from/to
         $move = $this->getMoveData();
@@ -163,8 +163,8 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
      */
     public function deleteLocation()
     {
-        // Get ContentTypeService
-        $contentTypeService = $this->getContentTypeService();
+        // Get LocationService
+        $locationService = $this->getLocationService();
 
         // Get data with location to delete
         $deleteID = $this->deleteData();

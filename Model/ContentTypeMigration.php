@@ -260,6 +260,18 @@ class ContentTypeMigration implements ContainerAwareInterface {
         return $contentTypeService;
     }
 
+    /* Get LocationService
+     *
+     * @param object                        $repository
+     */
+    public function getLocationService ( $repository = null )
+    {
+        $repository = $repository === null ? $this->getRepository() : $repository;
+        $locationService = $repository->getLocationService();
+
+        return $locationService;
+    }
+
     /* Build object from given array
      *
      * @param object                        $obj
