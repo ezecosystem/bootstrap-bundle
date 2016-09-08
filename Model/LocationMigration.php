@@ -3,7 +3,6 @@
 namespace xrow\bootstrapBundle\Model;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
-    Doctrine\DBAL\Migrations\AbstractMigration,
     Symfony\Component\DependencyInjection\ContainerAwareInterface,
     Symfony\Component\DependencyInjection\ContainerInterface,
     eZ\Publish\Core\Base\Exceptions\NotFoundException,
@@ -75,11 +74,11 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         $this->moveLocation();
     }
 
-    public function delete( $moveData = null ) {
+    public function delete( $deleteData = null ) {
         // Set loadUser
         $this->setLoadUser( $this->loadUser );
         // get Location data
-        $this->setData( $moveData, "rm" );
+        $this->setData( $deleteData, "rm" );
         // delete Location
         $this->deleteLocation();
     }
@@ -108,15 +107,19 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
     public function copyLocation()
     {
         // Get LocationService
-        $contentTypeService = $this->getLocationService();
+        $locationService = $this->getLocationService();
 
         // Get data with location to copy from/to
         $copy = $this->getCopyData();
 
+        // Load Location Instances
+        $srcLocationId = $locationService->loadLocation( $copy['srcLocationId'] );
+        $destinationParentLocationId = $locationService->loadLocation( $copy['destinationParentLocationId'] );
+
         try
         {
             // Copy location
-            $newLocation = $locationService->copySubtree( $copy['srcLocationId'], $copy['destinationParentLocationId'] );
+            $newLocation = $locationService->copySubtree( $srcLocationId, $destinationParentLocationId );
         }
         catch ( \eZ\Publish\API\Repository\Exceptions\NotFoundException $e )
         {
@@ -126,7 +129,7 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         {
             throw $e->getMessage();
         }
-         echo( "Location COPIED succesfully!" );
+         print_r( "Location COPIED succesfully!" );
     }
 
     /**
@@ -136,15 +139,19 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
     public function moveLocation()
     {
         // Get LocationService
-        $contentTypeService = $this->getLocationService();
+        $locationService = $this->getLocationService();
 
         // Get data with location to move from/to
         $move = $this->getMoveData();
 
+        // Load Location Instances
+        $srcLocationId = $locationService->loadLocation( $move['srcLocationId'] );
+        $newParentLocationId = $locationService->loadLocation( $move['newParentLocation'] );
+
         try
         {
             // Move location
-            $newLocation = $locationService->moveSubtree( $move['srcLocationId'], $move['newParentLocation'] );
+            $newLocation = $locationService->moveSubtree( $srcLocationId, $newParentLocationId );
         }
         catch ( \eZ\Publish\API\Repository\Exceptions\NotFoundException $e )
         {
@@ -154,7 +161,7 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         {
             throw $e->getMessage();
         }
-         echo( "Location MOVED succesfully!" );
+         print_r( "Location MOVED succesfully!" );
     }
 
     /**
@@ -167,12 +174,15 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         $locationService = $this->getLocationService();
 
         // Get data with location to delete
-        $deleteID = $this->deleteData();
+        $delete = $this->deleteData;
+
+        // Load Location Instance
+        $srcLocationId = $locationService->loadLocation( $delete['srcLocationId'] );
 
         try
         {
             // Delete location
-            $deletedLocation = $locationService->deleteLocation( $deleteID );
+            $deletedLocation = $locationService->deleteLocation( $srcLocationId );
         }
         catch ( \eZ\Publish\API\Repository\Exceptions\NotFoundException $e )
         {
@@ -182,14 +192,14 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         {
             throw $e->getMessage();
         }
-         echo( "Location DELETED succesfully!" );
+         print_r( "Location DELETED succesfully!" );
     }
 
     public function testCopyData()
     {
         $add = array(
-            "srcLocationId" => 99999,
-            "destinationParentLocationId" => 88888,
+            "srcLocationId" => 725221,
+            "destinationParentLocationId" => 365221,
         );
         return $add;
     }
