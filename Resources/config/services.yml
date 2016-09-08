@@ -40,4 +40,11 @@ services:
             - [setContainer, [@service_container]]
         tags:
             - { name: kernel.event_subscriber }
-    
+    xrow.content_type_migration:
+        class: xrow\bootstrapBundle\Model\ContentTypeMigration
+        calls:
+            - [setContainer, [@service_container]]
+    xrow.content_location_migration:
+        class: xrow\bootstrapBundle\Model\LocationMigration
+        calls:
+            - [setContainer, [@service_container]]
