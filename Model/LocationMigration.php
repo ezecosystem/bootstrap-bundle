@@ -25,7 +25,7 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
     private $moveData;
 
     /**
-     * Data to MOVE
+     * Data to DELETE
      *
      * @var deleteData
      */
@@ -195,20 +195,20 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
          print_r( "Location DELETED succesfully!" );
     }
 
-    public function testCopyData()
+    public function exampleCopyData()
     {
-        $add = array(
+        $copyData = array(
             "srcLocationId" => 725221,
             "destinationParentLocationId" => 365221,
         );
-        return $add;
+        return $copyData;
     }
 
-    public function testMoveData()
+    public function exampleMoveData()
     {
-        $remove = array(
-            "srcLocationId" => 99999,
-            "newParentLocation" => 88888,
+        $moveData = array(
+            "srcLocationId" => 725221,
+            "newParentLocation" => 365221,
         );
         return $remove;
     }

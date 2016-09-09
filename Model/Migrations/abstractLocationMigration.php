@@ -8,22 +8,28 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
     Symfony\Component\DependencyInjection\ContainerInterface,
     eZ\Publish\Core\Base\Exceptions\NotFoundException;
 
-abstract class abstractContentTypeMigration extends AbstractMigration implements ContainerAwareInterface {
+abstract class abstractLocationMigration extends AbstractMigration implements ContainerAwareInterface {
 
     /**
-     * Data to add
+     * Data with Location to COPY
      *
-     * @var addData
+     * @var copyData
      */
-    private $addData;
+    private $copyData;
 
     /**
-     * Data to remove
+     * Data with Location to MOVE
      *
-     * @var removeData
+     * @var moveData
      */
-    private $removeData;
+    private $moveData;
 
+    /**
+     * Data with Location to DELETE
+     *
+     * @var deleteData
+     */
+    private $deleteData;
 
 
     /**
@@ -49,23 +55,33 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
     }
 
     /**
-     * Adds the class attribute.
+     * Move Location from A to B.
      *
-     * @param addData|null $addData
+     * @param moveData|null $moveData
      */
-    protected function add( $addData = null ) {
+    protected function move( $moveData = null ) {
         // add attribute
-        $this->getContentTypeContainer()->add($addData);
+        $this->getContentTypeContainer()->move( $moveData );
     }
 
     /**
-     * Removes the class attribute.
+     * Copy Location from A to B.
      *
-     * @param removeData|null $removeData
+     * @param copyData|null $copyData
      */
-    protected function remove( $removeData = null ) {
+    protected function copy( $copyData = null ) {
         // add attribute
-        $this->getContentTypeContainer()->remove( $removeData );
+        $this->getContentTypeContainer()->copy( $copyData );
+    }
+
+    /**
+     * Delete Location with ID A.
+     *
+     * @param deleteData|null $deleteData
+     */
+    protected function delete( $deleteData = null ) {
+        // add attribute
+        $this->getContentTypeContainer()->delete( $deleteData );
     }
 
     /**
@@ -73,6 +89,6 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
      */
     protected function getContentTypeContainer()
     {
-        return $this->getContainer()->get('xrow.content_type_migration');
+        return $this->getContainer()->get('xrow.content_location_migration');
     }
 }
