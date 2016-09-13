@@ -62,14 +62,23 @@ class ContentTypeCommand extends ContainerAwareCommand
         // REMOVE
         if( isset($remove) && $remove == 1) {
             $this->getContentTypeContainer()->remove(
-                $this->formatRemoveInput($contentTypeIdentifier, $fieldDefinitionIdentifier)
+                $this->formatRemoveInput( $contentTypeIdentifier, $fieldDefinitionIdentifier )
             );
         }
 
         // ADD
         $addTestData = $this->getContentTypeContainer()->testAddData();
         if( isset($add) && $add == 1) {
-            $this->getContentTypeContainer()->add($addTestData);
+
+        if ( is_array( $addTestData ) ) :
+            foreach( $addTestData as $key => $value) :
+                // add attribute
+                $this->getContentTypeContainer()->add( $addTestData[$key] );
+            endforeach;
+        else:
+            echo "$addTestData is not an Array";
+        endif;
+
         }
 
     }
@@ -80,13 +89,12 @@ class ContentTypeCommand extends ContainerAwareCommand
      * @param  string $contentTypeIdentifier     Content Class by Identifier. Ex.: file_audio
      * @param  string $fieldDefinitionIdentifier Contentclass Attribute Identifier. Ex.: xrowgis
      * @return array  $correctRemoveData         Correct formatted remove data
-     *                                           Ex.: ["class_identifier"=> "file_audio", "class_attribute" => "xrowgis" ]
+     *                                           Ex.: ["file_audio" => "xrowgis" ] // class_identifier => class_attribute
      */
     public function formatRemoveInput($contentTypeIdentifier, $fieldDefinitionIdentifier)
     {
         return $correctRemoveData = array(
-            "class_identifier" => $contentTypeIdentifier,
-            "class_attribute" => $fieldDefinitionIdentifier
+            $contentTypeIdentifier => $fieldDefinitionIdentifier
         );
 
     }

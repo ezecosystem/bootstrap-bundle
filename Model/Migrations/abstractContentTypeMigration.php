@@ -54,8 +54,15 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
      * @param addData|null $addData
      */
     protected function add( $addData = null ) {
-        // add attribute
-        $this->getContentTypeContainer()->add($addData);
+
+        if ( is_array( $addData ) ) :
+            foreach( $addData as $key => $value) :
+                // add attribute
+                $this->getContentTypeContainer()->add( $addData[$key] );
+            endforeach;
+        else:
+            echo "$addData is not an Array";
+        endif;
     }
 
     /**
@@ -64,8 +71,16 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
      * @param removeData|null $removeData
      */
     protected function remove( $removeData = null ) {
-        // add attribute
-        $this->getContentTypeContainer()->remove( $removeData );
+
+        if ( is_array( $removeData ) ) :
+            foreach( $removeData as $key => $value) :
+                // add attribute
+                $this->getContentTypeContainer()->remove( $removeData[$key] );
+            endforeach;
+
+        else:
+            echo "$removeData is not an Array";
+        endif;
     }
 
     /**

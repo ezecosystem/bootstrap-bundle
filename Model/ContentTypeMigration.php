@@ -58,6 +58,7 @@ class ContentTypeMigration implements ContainerAwareInterface {
     }
 
     public function setAddData( $addData ) {
+        $addData = $this->formatInputAddData( $addData );
         $this->addData  = $addData;
     }
 
@@ -66,7 +67,8 @@ class ContentTypeMigration implements ContainerAwareInterface {
     }
 
     public function setRemoveData( $removeData ) {
-        $this->removeData = $removeData;
+        $convertedData = $this->formatInputRemoveData( $removeData );
+        $this->removeData = $convertedData;
     }
 
     public function getRemoveData() {
@@ -272,6 +274,59 @@ class ContentTypeMigration implements ContainerAwareInterface {
         return $locationService;
     }
 
+    /**
+     * Format input data to valid format to delete class attribute
+     *
+     * @param  array $inputData     input REMOVE data
+     * @return array                correct formatted REMOVE data
+     */
+    public function formatInputRemoveData( $inputData )
+    {
+        $class_identifier = current(array_keys( $inputData ));
+
+        $convertedData["class_identifier"] = $class_identifier;
+        $convertedData["class_attribute"] = $inputData[$class_identifier];
+
+        return $convertedData;
+    }
+
+    /**
+     * Format input data to valid format to add class attribute
+     *
+     * @param  array $inputData     input ADD data
+     * @return array                correct formatted ADD data
+     */
+    public function formatInputAddData( $inputData )
+    {
+        // first key contains the class identifier. Ex.: file_audio, folder, frontpage etc
+        $class_identifier = current(array_keys($inputData));
+        try {
+            $data = array(
+            "contentclass_identifier" => $class_identifier, // Required
+                    "contentclass_attribute" => array(
+                        "identifier" => $inputData[$class_identifier]["identifier"], // Required Ex: xrowgis, headline
+                        "data_type_string" => $inputData[$class_identifier]["type"],// Required Ex.: xrowgis, ezstring
+                        "field_structure" => array( // is converted later to object
+                                    "names" => $inputData[$class_identifier]["names"], // Required | array()
+                                    "descriptions" => $inputData[$class_identifier]["descriptions"], // Required | array()
+                                    "fieldGroup" => $inputData[$class_identifier]["fieldGroup"],  //
+                                    "position" => $inputData[$class_identifier]["position"], // Required last|
+                                    "isTranslatable" => $inputData[$class_identifier]["isTranslatable"], // Required
+                                    "isRequired" => $inputData[$class_identifier]["isRequired"], // Required
+                                    "isInfoCollector" => $inputData[$class_identifier]["isInfoCollector"], // Required
+                                    "defaultValue" => $inputData[$class_identifier]["options"], // array()
+                        )
+                    )
+            );
+        }
+        catch ( \Exception $e )
+        {
+            echo "Wrong input data";
+        }
+
+        return $data;
+    }
+
     /* Build object from given array
      *
      * @param object                        $obj
@@ -285,47 +340,44 @@ class ContentTypeMigration implements ContainerAwareInterface {
         return $obj;
     }
 
+    /**
+     * Example of correct input data for ADDING attributes and testing
+     *
+     * @return Array $add
+     */
     public function testAddData()
     {
         $add = array(
-                "Name" => "Audio",
-                "contentclass_identifier" => "file_audio", //$contentTypeIdentifier = file_audio
-                "names" => array("ger-DE" => "Audio"), // Required
-                "main_language_code" => "ger-DE", // Required
-                "contentclass_attribute" => array(
-                    "identifier" => "zztop", //Ex: xrowgis, headline
-                    "data_type_string" => "xrowgis",// Ex.: xrowgis, ezstring
-                    "field_structure" => array(
-                                "names" => array( "ger-DE" => "ZZTop" ),
-                                "descriptions" => array( "ger-DE" => "ZZ Top is a band " ),
-                                "fieldGroup" => "",
-                                "position" => 11,
-                                "isTranslatable" => false,
-                                "isRequired" => false,
-                                "isInfoCollector" => false,
-                                "defaultValue" => array(
-                                        "latitude" => 0, // requires int
-                                        "longitude" => 0, // requires int
-                                        "street" => "",
-                                        "zip" => "",
-                                        "district" => "",
-                                        "city" => "",
-                                        "state" => "",
-                                        "country" => "",
-                                ),
-                                "isSearchable" => true,
+                    array( "file_audio" => array(
+                                   "identifier" => "zztop", // Required Ex: xrowgis, headline
+                                    "type" => "xrowgis",// Required Ex.: xrowgis, ezstring
+                                    "names" => array( "ger-DE" => "ZZTop" ), // Required | array
+                                    "descriptions" => array( "ger-DE" => "ZZ Top is a band " ), // Required | array
+                                    "fieldGroup" => "",
+                                    "position" => 11, // Required
+                                    "isTranslatable" => false, // Required boolean | default false
+                                    "isRequired" => false, // Required boolean | default false
+                                    "isInfoCollector" => false, // Required boolean | default false
+                                    "isSearchable" => true,  // Required boolean | default false
+                                    "options" => array()
                         )
-                    )
-                );
+                    ),
+        );
         return $add;
     }
 
+    /**
+     * Example of correct input data for REMOVING attributes and testing
+     *
+     * @return Array $remove
+     */
     public function testRemoveData()
     {
         $remove = array(
-            "class_identifier" => "file_audio",
-            "class_attribute"=> "zztop"
+            array( "file_audio" => "zztop"), // remove from: class_identifier (key) => the following: class_attribute (value)
+            // array( "file_audio" => "zztop"),
         );
+
         return $remove;
     }
 
