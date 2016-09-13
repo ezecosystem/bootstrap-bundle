@@ -139,9 +139,11 @@ class ContentTypeMigration implements ContainerAwareInterface {
        }
         catch ( \Exception $e )
         {
-            throw $e;
+            echo $removeData["class_attribute"] . " Exception error: " . $e->getMessage() . "\n\r";
+            return;
         }
-         echo( "FieldDefinition added succesfully!" );
+
+         echo "FieldDefinition ".$removeData["class_attribute"]." added succesfully!\n\r";
     }
 
     /* Remove ezcontentclass_attribute from EXISTING ezcontentclass
@@ -175,9 +177,11 @@ class ContentTypeMigration implements ContainerAwareInterface {
         }
         catch ( \Exception $e )
         {
-            throw $e;
+            echo $removeData["class_attribute"] . " Exception error: " . $e->getMessage() . "\n\r";
+            return;
         }
-         echo( "FieldDefinition removed succesfully!" );
+
+         echo "FieldDefinition ".$removeData["class_attribute"]." removed succesfully!\n\r";
     }
 
     /* Get ContentTypeGroup from object (Ex: $obj->loadContentTypeGroupByIdentifier[Media])
@@ -380,5 +384,4 @@ class ContentTypeMigration implements ContainerAwareInterface {
 
         return $remove;
     }
-
 }
