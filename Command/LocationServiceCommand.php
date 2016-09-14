@@ -59,28 +59,28 @@ class LocationServiceCommand extends ContainerAwareCommand
     }
 
     /**
-     * Returns correct/formatted array data
+     * Returns expected correct/formatted input data
      *
      * @param  string $srcLocationId                   Source LocationID
      * @param  string $destinationParentLocationId     Destination LocationID
      *
-     * @return array  $correctRemoveData                Correct formatted remove data
+     * @return array  $expectedInputData               Correct formatted input data
      */
     public function formatInputData($srcLocationId, $destinationParentLocationId, $flag)
     {
         if( $flag == "move" )
             return $correctCopyData = array(
-                "srcLocationId" => $srcLocationId,
-                "newParentLocation" => $destinationParentLocationId
+                "node" => $srcLocationId,
+                "to" => $destinationParentLocationId
             );
         if( $flag == "copy")
             return $correctCopyData = array(
-                "srcLocationId" => $srcLocationId,
-                "destinationParentLocationId" => $destinationParentLocationId
+                "node" => $srcLocationId,
+                "to" => $destinationParentLocationId
             );
         if ( $flag == "delete")
             return $correctCopyData = array(
-                'srcLocationId' =>  $srcLocationId
+                'node' =>  $srcLocationId
             );
     }
 

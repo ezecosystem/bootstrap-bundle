@@ -56,48 +56,63 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         return $this->container;
     }
 
-    public function copy( $copyData = null ) {
-        // Set loadUser
-        $this->setLoadUser( $this->loadUser );
-        // get Location data
-        $this->setData( $copyData, "cp" );
+    public function copy( $data = null ) {
+        // Preprocess data
+        $this->preprocess( $data, "cp" );
         // copy Location
         $this->copyLocation();
     }
 
-    public function move( $moveData = null ) {
-        // Set loadUser
-        $this->setLoadUser( $this->loadUser );
-        // get Location data
-        $this->setData( $moveData, "mv" );
+    public function move( $data = null ) {
+        // Preprocess data
+        $this->preprocess( $data, "mv" );
         // move Location
         $this->moveLocation();
     }
 
-    public function delete( $deleteData = null ) {
-        // Set loadUser
-        $this->setLoadUser( $this->loadUser );
-        // get Location data
-        $this->setData( $deleteData, "rm" );
+    public function delete( $data = null ) {
+        // Preprocess data
+        $this->preprocess( $data, "rm" );
         // delete Location
         $this->deleteLocation();
     }
 
-    public function setData( $addData, $flag ) {
+    private function preprocess( $data, $type )
+    {
+        // Set loadUser
+        $this->setLoadUser( $this->loadUser );
+        // format Location data
+        $data = $this->formatLocationInputData( $data, $type );
+        // set Location data to COPY
+        $this->setData( $data, $type );
+    }
+
+    /**
+     * Sets data with location data to move|copy|delete
+     * @param Array $locationData   data with location id and new destination
+     * @param String $flag          Either: cp|mv|rm
+     */
+    public function setData( $locationData, $flag ) {
         if( $flag == "cp" )
-            $this->copyData  = $addData;
+            $this->copyData  = $locationData;
         if( $flag == "mv" )
-            $this->moveData  = $addData;
+            $this->moveData  = $locationData;
         if( $flag == "rm" )
-            $this->deleteData  = $addData;
+            $this->deleteData  = $locationData;
     }
 
-    public function getCopyData() {
-        return $this->copyData;
-    }
-
-    public function getMoveData() {
-        return $this->moveData;
+    /**
+     * Gets data with location data to move|copy|delete
+     * @param String $flag          Either: cp|mv|rm
+     * @return correct data
+     */
+    public function getData( $flag ) {
+        if( $flag == "cp" )
+            return $this->copyData;
+        if( $flag == "mv" )
+            return $this->moveData;
+        if( $flag == "rm" )
+            return $this->deleteData;
     }
 
     /**
@@ -110,7 +125,7 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         $locationService = $this->getLocationService();
 
         // Get data with location to copy from/to
-        $copy = $this->getCopyData();
+        $copy = $this->getData( "cp" );
 
         // Load Location Instances
         $srcLocationId = $locationService->loadLocation( $copy['srcLocationId'] );
@@ -129,7 +144,8 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         {
             throw $e->getMessage();
         }
-         print_r( "Location COPIED succesfully!" );
+
+         echo "Location: ".$copy['destinationParentLocationId']." COPIED to: ". $copy['srcLocationId']." was succesfull!\n\r";
     }
 
     /**
@@ -142,7 +158,7 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         $locationService = $this->getLocationService();
 
         // Get data with location to move from/to
-        $move = $this->getMoveData();
+        $move = $this->getData( "mv" );
 
         // Load Location Instances
         $srcLocationId = $locationService->loadLocation( $move['srcLocationId'] );
@@ -161,7 +177,8 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         {
             throw $e->getMessage();
         }
-         print_r( "Location MOVED succesfully!" );
+
+         echo "Location: ".$move['srcLocationId']." MOVED to: ". $move['newParentLocation']." was succesfull!\n\r";
     }
 
     /**
@@ -192,7 +209,21 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         {
             throw $e->getMessage();
         }
-         print_r( "Location DELETED succesfully!" );
+
+         echo "Location ".$delete['srcLocationId']." DELETED succesfully!\n\r";
+    }
+
+    public function formatLocationInputData( $inputData = [], $flag = null )
+    {
+        $class_identifier = current(array_keys( $inputData ));
+
+        $correctLocationData["srcLocationId"] = $inputData["node"] ? $inputData["node"] : $inputData[0];
+        if( $flag == "cp" )
+            $correctLocationData["destinationParentLocationId"] = $inputData["to"];
+        if( $flag == "mv" )
+            $correctLocationData["newParentLocation"] = $inputData["to"];
+
+        return $correctLocationData;
     }
 
     public function exampleCopyData()
@@ -212,5 +243,4 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
         );
         return $remove;
     }
-
 }

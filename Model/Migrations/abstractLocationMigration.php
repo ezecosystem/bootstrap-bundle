@@ -60,8 +60,14 @@ abstract class abstractLocationMigration extends AbstractMigration implements Co
      * @param moveData|null $moveData
      */
     protected function move( $moveData = null ) {
-        // add attribute
-        $this->getContentTypeContainer()->move( $moveData );
+        if ( is_array( $moveData ) ) :
+            foreach( $moveData as $key => $value) :
+                // Delete Location
+                $this->getContentTypeContainer()->move( $moveData[$key] );
+            endforeach;
+        else:
+            echo "$moveData is not an Array";
+        endif;
     }
 
     /**
@@ -70,8 +76,14 @@ abstract class abstractLocationMigration extends AbstractMigration implements Co
      * @param copyData|null $copyData
      */
     protected function copy( $copyData = null ) {
-        // add attribute
-        $this->getContentTypeContainer()->copy( $copyData );
+        if ( is_array( $copyData ) ) :
+            foreach( $copyData as $key => $value) :
+                // Delete Location
+                $this->getContentTypeContainer()->copy( $copyData[$key] );
+            endforeach;
+        else:
+            echo "$copyData is not an Array";
+        endif;
     }
 
     /**
@@ -80,8 +92,15 @@ abstract class abstractLocationMigration extends AbstractMigration implements Co
      * @param deleteData|null $deleteData
      */
     protected function delete( $deleteData = null ) {
-        // add attribute
-        $this->getContentTypeContainer()->delete( $deleteData );
+
+        if ( is_array( $deleteData ) ) :
+            foreach( $deleteData as $key => $value) :
+                // Delete Location
+                $this->getContentTypeContainer()->delete( $deleteData[$key] );
+            endforeach;
+        else:
+            echo "$deleteData is not an Array";
+        endif;
     }
 
     /**

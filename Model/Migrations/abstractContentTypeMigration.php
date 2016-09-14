@@ -51,7 +51,7 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
     /**
      * Adds the class attribute.
      *
-     * @param addData|null $addData
+     * @param Array $addData    Array of class attributes to ADD
      */
     protected function add( $addData = null ) {
 
@@ -68,7 +68,7 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
     /**
      * Removes the class attribute.
      *
-     * @param removeData|null $removeData
+     * @param Array $addData    Array of class attributes to REMOVE
      */
     protected function remove( $removeData = null ) {
 
