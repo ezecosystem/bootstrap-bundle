@@ -22,7 +22,7 @@ class LocationServiceCommand extends ContainerAwareCommand
             ->setDescription('Manage Subtree Location')
             ->addArgument('operation', InputArgument::REQUIRED, 'Operation to execute, either copy or move')
             ->addArgument('srcLocationId', InputArgument::REQUIRED, 'A subtree\'s root Location')
-            ->addArgument('destinationParentLocationId', InputArgument::REQUIRED, 'Parent location ID to copy/move to')
+            ->addArgument('destinationParentLocationId', InputArgument::OPTIONAL, 'Parent location ID to copy/move to')
             ;
 
     }

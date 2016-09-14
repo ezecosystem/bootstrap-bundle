@@ -145,7 +145,7 @@ class LocationMigration extends ContentTypeMigration implements ContainerAwareIn
             throw $e->getMessage();
         }
 
-         echo "Location: ".$copy['destinationParentLocationId']." COPIED to: ". $copy['srcLocationId']." was succesfull!\n\r";
+         echo "Location: ".$copy['srcLocationId']." COPIED to: ". $copy['destinationParentLocationId']." was succesfull!\n\r";
     }
 
     /**
