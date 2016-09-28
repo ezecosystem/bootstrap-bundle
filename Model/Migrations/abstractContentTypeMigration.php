@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
     Doctrine\DBAL\Migrations\AbstractMigration,
     Symfony\Component\DependencyInjection\ContainerAwareInterface,
     Symfony\Component\DependencyInjection\ContainerInterface,
-    eZ\Publish\Core\Base\Exceptions\NotFoundException;
+    eZ\Publish\Core\Base\Exceptions\NotFoundException,
+    Doctrine\DBAL\Schema\Schema;
 
 abstract class abstractContentTypeMigration extends AbstractMigration implements ContainerAwareInterface {
 
@@ -61,7 +62,7 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
                 $this->getContentTypeContainer()->add( $addData[$key] );
             endforeach;
         else:
-            echo "$addData is not an Array";
+            echo "Data is not an Array";
         endif;
     }
 
@@ -79,7 +80,7 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
             endforeach;
 
         else:
-            echo "$removeData is not an Array";
+            echo "Data is not an Array";
         endif;
     }
 
@@ -89,5 +90,28 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
     protected function getContentTypeContainer()
     {
         return $this->getContainer()->get('xrow.content_type_migration');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
+    {
+        // Data with attributes to remove
+        $removeData = $this->remove;
+
+        // Remove Attribute
+        $this->remove( $removeData );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+        // Data with attributes to add
+        // $addData = $this->add;
+        // Add Attribute
+        // $this->add( $addData );
     }
 }

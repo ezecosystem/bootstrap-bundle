@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
     Doctrine\DBAL\Migrations\AbstractMigration,
     Symfony\Component\DependencyInjection\ContainerAwareInterface,
     Symfony\Component\DependencyInjection\ContainerInterface,
-    eZ\Publish\Core\Base\Exceptions\NotFoundException;
+    eZ\Publish\Core\Base\Exceptions\NotFoundException,
+    Doctrine\DBAL\Schema\Schema;
 
 abstract class abstractLocationMigration extends AbstractMigration implements ContainerAwareInterface {
 
@@ -66,7 +67,7 @@ abstract class abstractLocationMigration extends AbstractMigration implements Co
                 $this->getContentTypeContainer()->move( $moveData[$key] );
             endforeach;
         else:
-            echo "$moveData is not an Array";
+            echo "Data is not an Array";
         endif;
     }
 
@@ -82,7 +83,7 @@ abstract class abstractLocationMigration extends AbstractMigration implements Co
                 $this->getContentTypeContainer()->copy( $copyData[$key] );
             endforeach;
         else:
-            echo "$copyData is not an Array";
+            echo "Data is not an Array";
         endif;
     }
 
@@ -99,7 +100,7 @@ abstract class abstractLocationMigration extends AbstractMigration implements Co
                 $this->getContentTypeContainer()->delete( $deleteData[$key] );
             endforeach;
         else:
-            echo "$deleteData is not an Array";
+            echo "Data is not an Array";
         endif;
     }
 
@@ -110,4 +111,35 @@ abstract class abstractLocationMigration extends AbstractMigration implements Co
     {
         return $this->getContainer()->get('xrow.content_location_migration');
     }
+
+    /**
+     * @param Schema $schema
+     */
+    public function up( Schema $schema )
+    {
+        // Get task
+        $taskData = $this->task;
+
+        if( is_array($taskData) ) {
+            if( isset($taskData["copy"]) )
+            // Copy/Move Location from A to B
+            $this->copy( $taskData["copy"] );
+
+            if( isset($taskData["move"]) )
+            // Copy/Move Location from A to B
+            $this->move( $taskData["move"] );
+
+            if( isset($taskData["remove"]) )
+            // Delete A
+            $this->delete( $taskData["delete"] );
+        }
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+    }
+
 }
