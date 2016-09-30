@@ -159,19 +159,24 @@ class ContentTypeMigration implements ContainerAwareInterface {
         // Get attribute to add
         $removeData = $this->getRemoveData();
 
-
         // Get ContentType
         $contentType = $this->getContentType( $contentTypeService, $removeData["class_identifier"]);
 
         //Get FieldDefinition from $contentType
         $fieldDefinition = $this->getExistingFieldDefinition( $contentType, $removeData["class_attribute"]);
 
+        // Save any possible content type draft
+        $this->saveContentTypeDraft( $contentType->id );
+
         try
         {
             // Create a draft
             $contentTypeDraft = $contentTypeService->createContentTypeDraft( $contentType );
-            // fieldDefinition to REMOVE from contentTypeDraft
-            $removeFields = $contentTypeService->removeFieldDefinition($contentTypeDraft, $fieldDefinition);
+
+            if( isset($fieldDefinition)) {
+                // fieldDefinition to REMOVE from contentTypeDraft
+                $removeFields = $contentTypeService->removeFieldDefinition( $contentTypeDraft, $fieldDefinition );
+            }
             // Save/Publish (contentTypeDraft)
             $contentTypeService->publishContentTypeDraft($contentTypeDraft);
         }
@@ -229,16 +234,16 @@ class ContentTypeMigration implements ContainerAwareInterface {
      */
     public function getExistingFieldDefinition( $contentType, $fieldDefinitionIdentifier )
     {
-        try
+        if( isset($contentType->fieldDefinitionsByIdentifier[ $fieldDefinitionIdentifier ]) )
         {
             $fieldDefinition = $contentType->fieldDefinitionsByIdentifier[ $fieldDefinitionIdentifier ];
+            return $fieldDefinition;
         }
-        catch ( \eZ\Publish\API\Repository\Exceptions\NotFoundException $e )
+        else
         {
-            echo( "FieldDefinition with identifier $fieldDefinition in contentType $contentType not found" );
+            echo( "FieldDefinition with identifier $fieldDefinitionIdentifier not found\n" );
             return;
         }
-        return $fieldDefinition;
     }
 
     /* Get repository
@@ -264,6 +269,26 @@ class ContentTypeMigration implements ContainerAwareInterface {
         $contentTypeService = $repository->getContentTypeService();
 
         return $contentTypeService;
+    }
+
+    /**
+     * Save any created content class/type draft
+     * @param  integer $id Content Class ID
+     * @return string      Error message in case of failure
+     */
+    public function saveContentTypeDraft( $id )
+    {
+        // Get ContentTypeService
+        $contentTypeService = $this->getContentTypeService();
+
+        //Save any possible existing draft
+        try
+        {
+            $contentTypeDraft = $contentTypeService->loadContentTypeDraft( $id );
+            if( $contentTypeDraft )
+                $contentTypeService->publishContentTypeDraft($contentTypeDraft);
+        }
+        catch ( \Exception $e ){}
     }
 
     /* Get LocationService
