@@ -126,6 +126,13 @@ class ContentTypeMigration implements ContainerAwareInterface {
             $add["contentclass_identifier"]
         );
 
+        // If Position is not defined make it last+1
+        if( $add["contentclass_attribute"]["field_structure"]["position"] == "" )
+            $add["contentclass_attribute"]["field_structure"]["position"] = (count($contentType->fieldDefinitionsById) + 1);
+
+        // Save any possible content type draft
+        $this->saveContentTypeDraft( $contentType->id );
+
         try
         {
             // Create a draft from Existing
@@ -139,11 +146,11 @@ class ContentTypeMigration implements ContainerAwareInterface {
        }
         catch ( \Exception $e )
         {
-            echo $removeData["class_attribute"] . " Exception error: " . $e->getMessage() . "\n\r";
+            echo $add["contentclass_attribute"]["identifier"] . " Exception error: " . $e->getMessage() . "\n\r";
             return;
         }
 
-         echo "FieldDefinition ".$removeData["class_attribute"]." added succesfully!\n\r";
+         echo "FieldDefinition ".$add["contentclass_attribute"]["identifier"]." added succesfully!\n\r";
     }
 
     /* Remove ezcontentclass_attribute from EXISTING ezcontentclass
@@ -182,7 +189,7 @@ class ContentTypeMigration implements ContainerAwareInterface {
         }
         catch ( \Exception $e )
         {
-            echo $removeData["class_attribute"] . " Exception error: " . $e->getMessage() . "\n\r";
+            echo "ContentType: ".$removeData["class_attribute"] . " Exception error: " . $e->getMessage() . "\n\r";
             return;
         }
 
@@ -217,7 +224,7 @@ class ContentTypeMigration implements ContainerAwareInterface {
     {
         try
         {
-            $contentType = $contentTypeService->loadContentTypeByIdentifier($contentTypeIdentifier); 
+            $contentType = $contentTypeService->loadContentTypeByIdentifier($contentTypeIdentifier);
         }
         catch ( \eZ\Publish\API\Repository\Exceptions\NotFoundException $e )
         {
@@ -343,7 +350,7 @@ class ContentTypeMigration implements ContainerAwareInterface {
                                     "isTranslatable" => $inputData[$class_identifier]["isTranslatable"], // Required
                                     "isRequired" => $inputData[$class_identifier]["isRequired"], // Required
                                     "isInfoCollector" => $inputData[$class_identifier]["isInfoCollector"], // Required
-                                    "defaultValue" => $inputData[$class_identifier]["options"], // array()
+                                    // "defaultValue" => $inputData[$class_identifier]["options"], // array()
                         )
                     )
             );
@@ -388,7 +395,7 @@ class ContentTypeMigration implements ContainerAwareInterface {
                                     "isRequired" => false, // Required boolean | default false
                                     "isInfoCollector" => false, // Required boolean | default false
                                     "isSearchable" => true,  // Required boolean | default false
-                                    "options" => array()
+                                    // "options" => array()
                         )
                     ),
         );

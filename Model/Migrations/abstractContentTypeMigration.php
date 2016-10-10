@@ -69,7 +69,7 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
     /**
      * Removes the class attribute.
      *
-     * @param Array $addData    Array of class attributes to REMOVE
+     * @param Array $removeData    Array of class attributes to REMOVE
      */
     protected function remove( $removeData = null ) {
 
@@ -99,9 +99,13 @@ abstract class abstractContentTypeMigration extends AbstractMigration implements
     {
         // Data with attributes to remove
         $removeData = $this->remove;
+        $addData = $this->add;
 
         // Remove Attribute
-        $this->remove( $removeData );
+        if(isset($removeData) && is_array($removeData))
+            $this->remove( $removeData );
+        if(isset($addData) && is_array($addData))
+            $this->add( $addData );
     }
 
     /**
