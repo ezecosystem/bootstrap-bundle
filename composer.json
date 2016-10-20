@@ -5,6 +5,7 @@
     "description": "The xrow bundle",
     "require": {
         "braincrafted/bootstrap-bundle": "2.1.2",
+        "knplabs/knp-menu-bundle": "1.*",
         "twbs/bootstrap-sass": "v3.3.4"
     },
     "autoload": {
