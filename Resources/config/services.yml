@@ -2,11 +2,6 @@
 #        class: xrow\bootstrapBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
 services:
-    xrow.twig.extension.regex:
-        class: xrow\bootstrapBundle\Twig\Extension\RegExExtension
-        arguments: []
-        tags:
-            - {name: twig.extension}
     xrow.menu.builder:
         class: xrow\bootstrapBundle\Menu\Builder
         arguments:
@@ -45,11 +40,10 @@ services:
             - [setContainer, [@service_container]]
         tags:
             - { name: kernel.event_subscriber }
-    xrow.content_type_migration:
-        class: xrow\bootstrapBundle\Model\ContentTypeMigration
-        calls:
-            - [setContainer, [@service_container]]
-    xrow.content_location_migration:
-        class: xrow\bootstrapBundle\Model\LocationMigration
-        calls:
-            - [setContainer, [@service_container]]
+
+    xrow.requestresponse:
+        class: xrow\bootstrapBundle\EventListener\DBAConnectionListener
+        arguments: [@service_container, @logger]
+        tags:
+         - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }
+#         - { name: kernel.event_listener, event: console.terminate, method: onConsoleTerminate }
