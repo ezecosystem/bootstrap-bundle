@@ -34,13 +34,13 @@ class DBAConnectionListener
     /**
      * Modify DB settings on command call
      *
-     * @param      ConsoleCommandEvent $event  (description)
+     * @param      ConsoleCommandEvent $event
      */
     public function onConsoleCommand( ConsoleCommandEvent $event )
     {
        $command = $event->getCommand();
-       $name = $command->getName();
-       if( $name == "kaliop:migration:migrate") {
+       $name = $command->getName(); // eg. "kaliop:migration:migrate"
+       if( PHP_SAPI === "cli") {
             // Increase SESSION_TIMEOUT for "default" database
             $this->setDbConnectionTimeout( $this->connection );
 
@@ -55,13 +55,13 @@ class DBAConnectionListener
     /**
      * Log result on after command Terminate
      *
-     * @param      ConsoleTerminateEvent $event  (description)
+     * @param      ConsoleTerminateEvent $event
      */
     public function onConsoleTerminate( ConsoleTerminateEvent $event )
     {
         $command = $event->getCommand();
         $name = $command->getName();
-        if( $name == "kaliop:migration:migrate") {
+        if( PHP_SAPI === "cli") {
             // Save comment in log
             $this->logger->info( 'Migration terminated: ' . $name );
         }
