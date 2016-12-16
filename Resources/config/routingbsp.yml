@@ -1,3 +1,6 @@
+_xrowbootstrapBundle_rest:
+    resource: "@xrowbootstrapBundle/Resources/config/routing_rest.yml"
+    prefix:   %ezpublish_rest.path_prefix%
 _xrowbootstrapBundle_test_html:
     path:   test/html
     defaults:  { _controller: xrowbootstrapBundle:Page:index }

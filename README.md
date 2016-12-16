@@ -3,7 +3,13 @@
     imports:
         - { resource: parameters.yml }
         - { resource: security.yml }
-    
+    xrowbootstrap:
+        rest_menu:
+            #use this config for including your classes in /api/ezp/v2/xrow/menu/{nodeID} rest controller
+            include_content_types: ['frontpage', 'folder', 'gallery']
+            #adds css classes to certain location id's
+            css_class_strings:
+                - { node_id: 2, class_string: 'icon icon-home' }
     framework:
         esi:             ~
         translator:      { fallback: %locale_fallback% }

@@ -1,0 +1,6 @@
+ezpublish_rest_RestMenu:
+    pattern: /menu/{locationID}
+    defaults: { _controller: xrowbootstrapBundle:RestMenu:GetRestMenu, locationID: 2 }
+    methods: [GET]
+    requirements:
+        locationID: \d+

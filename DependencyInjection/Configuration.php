@@ -3,14 +3,16 @@
 namespace xrow\bootstrapBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\Configuration as SiteAccessConfiguration;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
-class Configuration implements ConfigurationInterface
+class Configuration extends SiteAccessConfiguration implements ConfigurationInterface
 {
     /**
      * @var string
@@ -32,6 +34,22 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root($this->rootIdentifier);
+
+        $systemNode = $this->generateScopeBaseNode( $rootNode );
+        $systemNode
+            ->arrayNode( 'include_content_types' )
+                ->prototype('scalar')->end()
+            ->end()
+            ->arrayNode( 'css_class_strings' )
+                ->useAttributeAsKey('locationId')
+                ->prototype('array')
+                    ->children()
+                        ->integerNode('locationId')->min(2)->end()
+                        ->scalarNode('class_string')->end()
+                    ->end()
+                ->end()
+            ->end();
+
         $rootNode
             ->children()
                 ->scalarNode('show_navigation_identifier')->defaultNull()->end()
