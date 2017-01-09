@@ -24,11 +24,11 @@ class RestMenu extends ValueObjectVisitor
     protected $urlAliasService;
 
     protected $locationService;
-    
+
     protected $searchService;
-    
+
     protected $locationUtilities;
-    
+
     protected $nodeCssClassStrings;
 
     public function __construct( URLAliasService $urlAliasService, LocationService $locationService, LocationUtilities $locationUtilities, SearchService $searchService)
@@ -60,6 +60,14 @@ class RestMenu extends ValueObjectVisitor
             $location = $this->locationService->loadLocation( $locationId );
             $contentInfo = $location->contentInfo;
             $parentLocations = array();
+            $urlAlias = $this->urlAliasService->reverseLookup( $location );
+            $path = $this->locationUtilities->removePathPrefix( $urlAlias->path, $pathPrefixes);
+            $childrenCount = $this->childrenCount( $locationId, $contentTypeIdentifier, $languages );
+            $hasChildren = false;
+            if ( $childrenCount > 0 ) {
+                $hasChildren = true;
+            }
+            
 
             if ( $location->invisible )
             {
@@ -67,7 +75,23 @@ class RestMenu extends ValueObjectVisitor
             }
 
             $generator->startObjectElement( 'menu' );
-                //Current locaion and siblings start
+                //current location start
+                    $generator->startObjectElement( 'current' );
+                        $generator->startValueElement( 'name', $contentInfo->name );
+                        $generator->endValueElement( 'name' );
+                        $generator->startValueElement( 'url', $path );
+                        $generator->endValueElement( 'url' );
+                        $generator->startValueElement( 'locationId', $locationId );
+                        $generator->endValueElement( 'locationId' );
+                        $generator->startValueElement( 'priority', $location->priority );
+                        $generator->endValueElement( 'priority' );
+                        $generator->startValueElement( 'class', $this::getCssClass( $locationId ) );
+                        $generator->endValueElement( 'class' );
+                        $generator->startValueElement( 'hasChildren', $hasChildren );
+                        $generator->endValueElement( 'hasChildren' );
+                    $generator->endObjectElement( 'current' );
+                //current location end
+                //siblings start
                     $generator->startList( 'siblings' );
                         $siblings = $this::getSiblings($locationId, $limit, $contentTypeIdentifier, $languages, $pathPrefixes, $rootLocationID, $locationId);
                         if ( sizeof($siblings) > 0 ) {
@@ -81,13 +105,21 @@ class RestMenu extends ValueObjectVisitor
                                     $generator->endValueElement( 'locationId' );
                                     $generator->startValueElement( 'priority', $sibling["priority"] );
                                     $generator->endValueElement( 'priority' );
-                                    $generator->startValueElement( 'class', $this::getCssClass($sibling["locationId"]) );
+                                    $generator->startValueElement( 'class', $this::getCssClass($sibling["locationId"] ) );
                                     $generator->endValueElement( 'class' );
+                                    $generator->startValueElement( 'hasChildren', $sibling["hasChildren"] );
+                                    $generator->endValueElement( 'hasChildren' );
                                 $generator->endObjectElement( 'sibling' );
                             }
                         } else {
                             $urlAlias = $this->urlAliasService->reverseLookup( $location );
                             $path = $this->locationUtilities->removePathPrefix( $urlAlias->path, $pathPrefixes);
+
+                            $childrenCount = $this->childrenCount( $locationId, $contentTypeIdentifier, $languages );
+                            $hasChildren = false;
+                            if ( $childrenCount > 0 ) {
+                                $hasChildren = true;
+                            }
 
                             $generator->startObjectElement( "sibling" );
                                 $generator->startValueElement( 'name', $contentInfo->name );
@@ -100,6 +132,8 @@ class RestMenu extends ValueObjectVisitor
                                 $generator->endValueElement( 'priority' );
                                 $generator->startValueElement( 'class', $this::getCssClass($locationId) );
                                 $generator->endValueElement( 'class' );
+                                $generator->startValueElement( 'hasChildren', $hasChildren );
+                                $generator->endValueElement( 'hasChildren' );
                             $generator->endObjectElement( "sibling" );
                         }
                     $generator->endList( 'siblings' );
@@ -107,36 +141,43 @@ class RestMenu extends ValueObjectVisitor
 
                 //Children start
                     $children = $this::getChildren($locationId, $limit, $contentTypeIdentifier, $languages, $pathPrefixes );
-                    if ( sizeof($children) > 0 ) {
-                        $generator->startList( 'children' );
-                            foreach ( $children as $child ) {
-                                $generator->startObjectElement( 'child' );
-                                    $generator->startValueElement( 'name', $child["name"] );
-                                    $generator->endValueElement( 'name' );
-                                    $generator->startValueElement( 'url', $child["url"] );
-                                    $generator->endValueElement( 'url' );
-                                    $generator->startValueElement( 'locationId', $child["locationId"] );
-                                    $generator->endValueElement( 'locationId' );
-                                    $generator->startValueElement( 'priority', $child["priority"] );
-                                    $generator->endValueElement( 'priority' );
-                                    $generator->startValueElement( 'class', $this::getCssClass($child["locationId"]) );
-                                    $generator->endValueElement( 'class' );
-                                $generator->endObjectElement( 'child' );
-                            }
-                        $generator->endList( 'children' );
-                    }
+                    $generator->startList( 'children' );
+                        if ( sizeof($children) > 0 ) {
+                                foreach ( $children as $child ) {
+                                    $generator->startObjectElement( 'child' );
+                                        $generator->startValueElement( 'name', $child["name"] );
+                                        $generator->endValueElement( 'name' );
+                                        $generator->startValueElement( 'url', $child["url"] );
+                                        $generator->endValueElement( 'url' );
+                                        $generator->startValueElement( 'locationId', $child["locationId"] );
+                                        $generator->endValueElement( 'locationId' );
+                                        $generator->startValueElement( 'priority', $child["priority"] );
+                                        $generator->endValueElement( 'priority' );
+                                        $generator->startValueElement( 'class', $this::getCssClass($child["locationId"]) );
+                                        $generator->endValueElement( 'class' );
+                                        $generator->startValueElement( 'hasChildren', $child["hasChildren"] );
+                                        $generator->endValueElement( 'hasChildren' );
+                                    $generator->endObjectElement( 'child' );
+                                }
+                        }
+                    $generator->endList( 'children' );
                 //Children end
 
                 //breadcrumb start
                 $parentLocationIds = $this::getPathArray($locationId, $rootLocationID);
-                if ( isset($parentLocationIds) && sizeof($parentLocationIds) > 0 ) {
-                    $generator->startList( 'ancestors' );
+                $generator->startList( 'ancestors' );
+                    if ( isset($parentLocationIds) && sizeof($parentLocationIds) > 0 ) {
                         foreach ( $parentLocationIds as $parentLocationID ) {
                             $parentLocation = $this->locationService->loadLocation( $parentLocationID );
                             $parentUrlAlias = $this->urlAliasService->reverseLookup( $parentLocation );
                             $parentContentInfo = $parentLocation->contentInfo;
                             $parentPath = $this->locationUtilities->removePathPrefix( $parentUrlAlias->path, $pathPrefixes);
                             $parentName = $parentContentInfo->name;
+                            $childrenCount = $this->childrenCount( $parentLocationID, $contentTypeIdentifier, $languages );
+                            $hasChildren = false;
+                            if ( $childrenCount > 0 ) {
+                                $hasChildren = true;
+                            }
 
                             $generator->startObjectElement( "ancestor" );
                                 $generator->startValueElement( 'name', $parentName );
@@ -147,10 +188,12 @@ class RestMenu extends ValueObjectVisitor
                                 $generator->endValueElement( 'locationId' );
                                 $generator->startValueElement( 'class', $this::getCssClass($parentLocationID) );
                                 $generator->endValueElement( 'class' );
+                                $generator->startValueElement( 'hasChildren', $hasChildren );
+                                $generator->endValueElement( 'hasChildren' );
                             $generator->endObjectElement( "ancestor" );
                         }
-                    $generator->endList( 'ancestors' );
-                }
+                    }
+                $generator->endList( 'ancestors' );
                 //breadcrumb end
 
             $generator->endObjectElement( 'menu' );
@@ -201,6 +244,7 @@ class RestMenu extends ValueObjectVisitor
         $resultArray = array();
 
         foreach ($pager as $pagerItem) {
+
             $pagerContentInfo = $pagerItem->contentInfo;
             $pagerLocationId = $pagerContentInfo->mainLocationId;
             $pagerLocation = $this->locationService->loadLocation( $pagerLocationId );
@@ -208,7 +252,14 @@ class RestMenu extends ValueObjectVisitor
 
             $pagerName = $pagerContentInfo->name;
             $pagerPath = $this->locationUtilities->removePathPrefix( $pagerUrlAlias->path, $pathPrefixes);
-            array_push($resultArray, array('name' => $pagerName, 'url' => $pagerPath, 'locationId' => $pagerLocationId, 'priority' => $pagerLocation->priority) );
+
+            $childrenCount = $this->childrenCount( $pagerLocationId, $contentTypeIdentifier, $languages );
+            $hasChildren = false;
+            if ( $childrenCount > 0 ) {
+                $hasChildren = true;
+            }
+
+            array_push($resultArray, array('name' => $pagerName, 'url' => $pagerPath, 'locationId' => $pagerLocationId, 'priority' => $pagerLocation->priority, 'hasChildren' => $hasChildren) );
         }
         return $resultArray;
     }
@@ -231,5 +282,19 @@ class RestMenu extends ValueObjectVisitor
            return $nodeCssClassStrings[$locationId]['class_string'];
         }
         return "";
+    }
+    
+    private function childrenCount( $locationId, $contentTypeIdentifier, $languages ) {
+        $childrenCountCriteria = array(
+            new Criterion\Visibility( Criterion\Visibility::VISIBLE ),
+            new Criterion\ParentLocationId( $locationId ),
+            new Criterion\ContentTypeIdentifier( $contentTypeIdentifier ),
+            new Criterion\LanguageCode( $languages ),
+        );
+        $childrenCountCriteria = new Criterion\LogicalAnd( $childrenCountCriteria );
+        $childrenCountQuery = new Query();
+        $childrenCountQuery->query = $childrenCountCriteria;
+        $childrenCountResult = $this->searchService->findContent($childrenCountQuery);
+        return $childrenCountResult->totalCount;
     }
 }

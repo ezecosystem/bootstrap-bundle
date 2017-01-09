@@ -26,7 +26,7 @@ services:
         arguments:
             - @ezpublish.api.repository
             - @ezpublish.config.resolver
-    xrow.helper.locationUtilities:
+    xrow.helper.location_utilities:
         class: xrow\bootstrapBundle\Helper\LocationUtilities
     xrow.configuration_mapper:
         class: xrow\bootstrapBundle\LegacyMapper\AdditionalConfig
@@ -49,13 +49,18 @@ services:
         tags:
          - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }
 #         - { name: kernel.event_listener, event: console.terminate, method: onConsoleTerminate }
-    Xrow.RestBundle.ValueObjectVisitor.Menu:
+    xrow.rest_bundle.value_object_visitor.menu:
         parent: ezpublish_rest.output.value_object_visitor.base
         class: xrow\bootstrapBundle\ValueObjectVisitor\RestMenu
         arguments:
             - @ezpublish.api.service.url_alias
             - @ezpublish.api.service.location
-            - @xrow.helper.locationUtilities
+            - @xrow.helper.location_utilities
             - @ezpublish.api.service.search
         tags:
             - { name: ezpublish_rest.output.value_object_visitor, type: xrow\bootstrapBundle\Values\RestMenu }
+    xrow.twig.extension.regex:
+        class: xrow\bootstrapBundle\Twig\Extension\RegExExtension
+        arguments: []
+        tags:
+            - {name: twig.extension}
