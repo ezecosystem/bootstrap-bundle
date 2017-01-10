@@ -169,9 +169,6 @@ function generateHtmlList( json, queryPart, $relation, filterType ) {
 
         //menu items start
         for( var i = 0; i < inputData.length; i++ ) {
-            if ( isRootLocation && inputData[i]["priority"] <= 0 ) {
-                break;
-            }
             url = "";
             text = "";
             cssClass = "";
