@@ -10,3 +10,7 @@
 .menu-open {
     overflow: hidden;
 }
+
+.menu-container {
+    position: relative;
+}
