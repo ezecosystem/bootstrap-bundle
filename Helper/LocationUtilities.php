@@ -20,6 +20,8 @@ class LocationUtilities {
         switch ($sortField) {
             case APILocation::SORT_FIELD_PATH:
                 return new SortClause\LocationPriority($sortOrder);
+                //Location\Path causes 500 errors so temporarily LocationPriority will be used
+                //return new SortClause\Location\Path($sortOrder);
 
             case APILocation::SORT_FIELD_PUBLISHED:
                 return new SortClause\DatePublished($sortOrder);
