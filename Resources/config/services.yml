@@ -30,14 +30,6 @@ services:
         class: xrow\bootstrapBundle\Helper\LocationUtilities
     xrow.configuration_mapper:
         class: xrow\bootstrapBundle\LegacyMapper\AdditionalConfig
-        arguments:
-            - @ezpublish.config.resolver.core
-            - @ezpublish.http_cache.purger
-            - @ezpublish_legacy.persistence_cache_purger
-            - @ezpublish.urlalias_generator
-            - @ezpublish.api.storage_engine.legacy.dbhandler
-            - @ezpublish_legacy.image_alias.cleaner
-            - %ezpublish_legacy.configuration_mapper.options%
         calls:
             - [setContainer, [@service_container]]
         tags:
@@ -45,10 +37,11 @@ services:
 
     xrow.requestresponse:
         class: xrow\bootstrapBundle\EventListener\DBAConnectionListener
-        arguments: [@service_container, @logger]
+        arguments: [@logger]
+        calls:
+            - [setContainer, [@service_container]]
         tags:
          - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }
-#         - { name: kernel.event_listener, event: console.terminate, method: onConsoleTerminate }
     xrow.rest_bundle.value_object_visitor.menu:
         parent: ezpublish_rest.output.value_object_visitor.base
         class: xrow\bootstrapBundle\ValueObjectVisitor\RestMenu

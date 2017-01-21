@@ -1,85 +1,53 @@
 <?php
 namespace xrow\bootstrapBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
-use Exception;
 use Monolog\Logger;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Increase DB SESSION_TIMEOUT for migration executed from php (cli) app/console to prevent
- * "2006 MySQL server has gone away" when switching between two databases
+ * "2006 MySQL server has gone away" error on connection timeouts
  */
 class DBAConnectionListener
 {
-    protected $container;
-    protected $connection;
-    protected $connection_cluster;
+    use ContainerAwareTrait;
+
     protected $logger;
 
-    public function __construct( ContainerInterface $container, Logger $logger )
+    public function __construct(Logger $logger)
     {
-        $this->container            = $container;
-        $this->connection           = $container->get(sprintf('doctrine.dbal.%s_connection', 'default'));
-        $this->connection_cluster   = $container->get(sprintf('doctrine.dbal.%s_connection', 'cluster'));
         $this->logger = $logger;
     }
 
     /**
      * Modify DB settings on command call
      *
-     * @param      ConsoleCommandEvent $event
+     * @param ConsoleCommandEvent $event            
      */
-    public function onConsoleCommand( ConsoleCommandEvent $event )
+    public function onConsoleCommand(ConsoleCommandEvent $event)
     {
-       $command = $event->getCommand();
-       $name = $command->getName(); // eg. "kaliop:migration:migrate"
-       if( PHP_SAPI === "cli") {
-            // Increase SESSION_TIMEOUT for "default" database
-            $this->setDbConnectionTimeout( $this->connection );
-
-            // Increase SESSION_TIMEOUT for  "cluster" database
-            $this->setDbConnectionTimeout( $this->connection_cluster );
-
-            // Save comment in log
-            $this->logger->info($name.': Modified DB SESSION_TIMEOUT');
-       }
-    }
-
-    /**
-     * Log result on after command Terminate
-     *
-     * @param      ConsoleTerminateEvent $event
-     */
-    public function onConsoleTerminate( ConsoleTerminateEvent $event )
-    {
-        $command = $event->getCommand();
-        $name = $command->getName();
-        if( PHP_SAPI === "cli") {
-            // Save comment in log
-            $this->logger->info( 'Migration terminated: ' . $name );
+        $connections = $this->container->getParameter("doctrine.connections");
+        if (PHP_SAPI === "cli") {
+            foreach ($connections as $connection) {
+                $this->setDbConnectionTimeout($this->container->get($connection));
+            }
+            
+            $this->logger->info($event->getCommand()
+                ->getName() . ': Modified DB SESSION_TIMEOUT');
         }
     }
 
     /**
      * Modify default DB connection and set session wait_timeout
      *
-     * @param      object  $connection  (description)
+     * @param object $connection
+     *            (description)
      */
-    public function setDbConnectionTimeout( $connection )
+    public function setDbConnectionTimeout(Connection $connection)
     {
-        $params = $connection->getParams();
-        $params["driverOptions"][1002] = 'SET SESSION wait_timeout=86400;';
-        // $this->logger->info(json_encode($params));
-        $connection->__construct(
-            $params, $connection->getDriver(), $connection->getConfiguration(),
-            $connection->getEventManager()
-        );
+        $connection->query('SET SESSION wait_timeout=86400;');
     }
 }
