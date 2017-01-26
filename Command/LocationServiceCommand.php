@@ -18,7 +18,7 @@ class LocationServiceCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('xrowmigration:location')
+            ->setName('xrow:location')
             ->setDescription('Manage Subtree Location')
             ->addArgument('operation', InputArgument::REQUIRED, 'Operation to execute, either copy or move')
             ->addArgument('srcLocationId', InputArgument::REQUIRED, 'A subtree\'s root Location')

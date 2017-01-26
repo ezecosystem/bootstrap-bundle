@@ -31,7 +31,7 @@ class ContentTypeCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('xrowmigration:class_attribute')
+            ->setName('xrow:class_attribute')
             ->setDescription('Migrate field definition/class attribute')
             ->addArgument('contenttype_identifier', InputArgument::REQUIRED, 'a content type/classname identifier')
             ->addArgument('field_identifier', InputArgument::REQUIRED, 'a field/class_attribute identifier')

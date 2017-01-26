@@ -16,7 +16,7 @@ class updateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('style:update')
+            ->setName('xrow:style:update')
             ->setDescription('Updates the CSS Styles from YML');
     }
 

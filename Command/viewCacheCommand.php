@@ -25,7 +25,7 @@ ezpublish/console xrowcache:view:clear --node-id=2
 
 EOT
         )
-        ->setName('xrowcache:view:clear');
+        ->setName('xrow:view:clear');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
