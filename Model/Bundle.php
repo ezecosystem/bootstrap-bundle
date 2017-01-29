@@ -27,6 +27,7 @@ class Bundle extends GeneratorBundle
         $this->configurationFormat = $configurationFormat;
         $this->isShared = $isShared;
         $this->testsDirectory = $this->getTargetDirectory().'/Tests';
+        parent::__construct($namespace, $name, $targetDirectory, $configurationFormat, $isShared);
     }
     /**
      * Returns the directory where the bundle will be generated.
