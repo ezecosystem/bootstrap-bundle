@@ -68,14 +68,12 @@ class BundleGeneratorCommand extends GeneratorCommand
         $package["require"]["php"] = "~5.5|~7.0";
         $package["autoload"]["psr-4"][$bundle->getNamespace() . "\\"] = "";
         file_put_contents( $bundle->getTargetDirectory() . "/composer.json", json_encode($package, JSON_PRETTY_PRINT));
-        $repo = "git@gitlab.com:xrow-shared/". $bundlebasename . ".git";
-
         
         $json = new JsonFile( $projectRootDirectory . "/composer.json");
         $composer = $json->read();
         $composer["repositories"][] = array(
             "type" => "vcs",
-            "url" => $repo
+            "url" => "ssh://git@gitlab.com:22/xrow-shared/". $bundlebasename . ".git"
         );
         $composer["require"]["xrow/" . $bundlebasename] = "dev-master";
         $json->write($composer);
@@ -83,7 +81,7 @@ class BundleGeneratorCommand extends GeneratorCommand
         
         $process = new Process("git init" , $bundle->getTargetDirectory() );
         $process->run();
-        $process = new Process("git remote add origin " . $repo , $bundle->getTargetDirectory() );
+        $process = new Process("git remote add origin " . "git@gitlab.com:xrow-shared/". $bundlebasename . ".git" , $bundle->getTargetDirectory() );
         $process->run();
         $process = new Process("git add ." , $bundle->getTargetDirectory() );
         $process->run();
