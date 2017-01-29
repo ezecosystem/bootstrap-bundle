@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-
 /**
  * Maps configuration parameters to the legacy parameters
  * Similar to https://github.com/ezsystems/LegacyBridge/blob/master/bundle/LegacyMapper/Configuration.php
@@ -17,9 +16,9 @@ class AdditionalConfig implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        if ( class_exists("eZ\Publish\Core\MVC\Legacy\LegacyEvents") ){
+        if ( class_exists("\eZ\Publish\Core\MVC\Legacy\LegacyEvents") ){
             return array(
-                eZ\Publish\Core\MVC\Legacy\LegacyEvents::PRE_BUILD_LEGACY_KERNEL => array( "onBuildKernel", 129 )
+                \eZ\Publish\Core\MVC\Legacy\LegacyEvents::PRE_BUILD_LEGACY_KERNEL => array( "onBuildKernel", 129 )
             );
         }
         return array();
@@ -40,7 +39,6 @@ class AdditionalConfig implements EventSubscriberInterface
         $event->getParameters()->set(
             "injected-settings",
             $settings + (array)$event->getParameters()->get( "injected-settings" )
-        );
-
+            );
     }
 }
