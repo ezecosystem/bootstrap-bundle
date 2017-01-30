@@ -19,9 +19,7 @@ class LocationUtilities {
         $sortOrder = $sortOrder == APILocation::SORT_ORDER_DESC ? Query::SORT_DESC : Query::SORT_ASC;
         switch ($sortField) {
             case APILocation::SORT_FIELD_PATH:
-                return new SortClause\LocationPriority($sortOrder);
-                //Location\Path causes 500 errors so temporarily LocationPriority will be used
-                //return new SortClause\Location\Path($sortOrder);
+                return new SortClause\Location\Priority($sortOrder);
 
             case APILocation::SORT_FIELD_PUBLISHED:
                 return new SortClause\DatePublished($sortOrder);
@@ -57,7 +55,7 @@ class LocationUtilities {
                 return new SortClause\ContentId($sortOrder);
 
             default:
-                return new SortClause\LocationPriority($sortOrder);
+                return new SortClause\Location\Priority($sortOrder);
         }
     }
 
