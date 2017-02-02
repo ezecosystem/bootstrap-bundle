@@ -40,7 +40,7 @@ class LocationUtilities {
             // case APILocation::SORT_FIELD_CLASS_NAME:
 
             case APILocation::SORT_FIELD_PRIORITY:
-                return new SortClause\LocationPriority($sortOrder);
+                return new SortClause\Location\Priority($sortOrder);
 
             case APILocation::SORT_FIELD_NAME:
                 return new SortClause\ContentName($sortOrder);
