@@ -41,7 +41,7 @@ class BundleGeneratorCommand extends GeneratorCommand
 
         
         $bundleName = 'Xrow' . $name . "Bundle";
-        $namespace = 'Xrow\\' . $bundleName;
+        $namespace = 'Xrow\\' . $name . "Bundle";
         $projectRootDirectory = $this->getContainer()->getParameter('kernel.root_dir').'/..';
         
         $dir = $projectRootDirectory."/src";
