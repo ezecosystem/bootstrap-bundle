@@ -44,7 +44,7 @@ class BundleGeneratorCommand extends GeneratorCommand
         $namespace = 'Xrow\\' . $name . "Bundle";
         $projectRootDirectory = $this->getContainer()->getParameter('kernel.root_dir').'/..';
         
-        $dir = $projectRootDirectory."/src";
+        $dir = $projectRootDirectory."/vendor";
 
         $bundle = new Bundle(
             $namespace,
@@ -93,10 +93,8 @@ class BundleGeneratorCommand extends GeneratorCommand
         $fs = new Filesystem();
         $fs->remove($bundle->getTargetDirectory());
 
-        #$output->writeln( 'Composer run' );
-        #$process = new Process("composer update" , $projectRootDirectory );
-        #$process->run();
-        $output->writeln( $name . ' created');
+        $output->writeln( $name . ' created in ' . $bundle->getTargetDirectory() );
+        $output->writeln( 'Run: composer require ' . $name . ' dev-master' );
     }
     protected function updateKernel(OutputInterface $output, KernelInterface $kernel, Bundle $bundle)
     {

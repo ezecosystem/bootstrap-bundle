@@ -36,6 +36,6 @@ class Bundle extends GeneratorBundle
      */
     public function getTargetDirectory()
     {
-        return rtrim($this->targetDirectory, '/').'/'.trim( strtolower(strtr($this->namespace, '\\', '/') ), '/');
+        return rtrim($this->targetDirectory, '/').'/'.trim( strtolower(strtr(str_replace("Bundle", "-bundle", $this->namespace ), '\\', '/') ), '/');
     }
 }
