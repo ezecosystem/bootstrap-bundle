@@ -94,7 +94,7 @@ class BundleGeneratorCommand extends GeneratorCommand
         $fs->remove($bundle->getTargetDirectory());
 
         $output->writeln( $name . ' created in ' . $bundle->getTargetDirectory() );
-        $output->writeln( 'Run: composer require ' . $name . ' dev-master' );
+        $output->writeln( 'Run: composer require ' . "xrow/". $bundlebasename . ' dev-master' );
     }
     protected function updateKernel(OutputInterface $output, KernelInterface $kernel, Bundle $bundle)
     {
