@@ -1,0 +1,6 @@
+# In 'cli_debug' environment override eZ Publish kernel for extra feedback during content updates
+#
+# Usage: copy this to ezpublish/config/ezpublish_cli_debug.yml
+
+imports:
+    - { resource: ezpublish.yml }

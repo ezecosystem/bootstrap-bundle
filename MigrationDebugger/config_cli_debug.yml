@@ -1,0 +1,10 @@
+# In 'cli_debug' environment override eZ Publish kernel for extra feedback during content updates
+#
+# Usage: copy this to ezpublish/config/config_cli_debug.yml
+
+imports:
+    - { resource: config.yml }
+
+parameters:
+    ezpublish.persistence.legacy.content.mapper.class: xrow\bootstrapBundle\MigrationDebugger\LegacyContentMapper
+    ezpublish.persistence.legacy.content_type.content_updater.class: xrow\bootstrapBundle\MigrationDebugger\LegacyContentUpdater
