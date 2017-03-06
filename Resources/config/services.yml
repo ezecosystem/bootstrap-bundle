@@ -57,3 +57,6 @@ services:
         arguments: []
         tags:
             - {name: twig.extension}
+    ezpublish.http_cache.purge_client.fos:
+        class: xrow\bootstrapBundle\Components\Cache\PurgeClient
+        arguments: [@ezpublish.http_cache.cache_manager]
